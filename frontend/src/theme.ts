@@ -1,9 +1,10 @@
 import { createTheme, alpha } from '@mui/material/styles';
+import type { PaletteMode } from '@mui/material/styles';
 
-export const getAppTheme = () =>
+export const getAppTheme = (mode: PaletteMode = 'dark') =>
   createTheme({
     palette: {
-      mode: 'dark',
+      mode,
       primary: {
         main: '#0f0f23',
         light: '#1a1a2e',

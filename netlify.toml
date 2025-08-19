@@ -1,0 +1,32 @@
+[build]
+  # Base directory: where the frontend code is located
+  base = "frontend"
+
+  # Build command: the command to build the production-ready files
+  command = "npm ci && npm run build"
+
+  # Publish directory: the folder containing the final build artifacts
+  publish = "dist"
+
+# Environment variables for build
+[build.environment]
+  NODE_VERSION = "18"
+  VITE_API_BASE_URL = "https://your-backend-domain.com"
+  VITE_NODE_ENV = "production"
+
+# This is a rewrite rule. It makes sure that if someone types a URL
+# like /research, the browser still gets your index.html.
+# It's essential for Single Page Applications (SPAs) like React.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Headers for security and performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

@@ -36,16 +36,21 @@ const Navbar: React.FC = () => {
       <Toolbar sx={{ py: 1 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', mr: 4 }}>
           <Box 
+            component={RouterLink}
+            to="/"
             sx={{ 
               display: 'flex', 
               alignItems: 'center',
-              background: 'linear-gradient(45deg, #e94560, #f39c12)',
               borderRadius: '12px',
               p: 1,
               mr: 2,
+              textDecoration: 'none',
+              '&:hover': {
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+              },
             }}
           >
-            <HomeIcon sx={{ fontSize: 28, color: 'white' }} />
+            <HomeIcon sx={{ fontSize: 28, color: '#f39c12' }} />
           </Box>
           <Box>
             <Typography 
@@ -65,10 +70,7 @@ const Navbar: React.FC = () => {
                 }
               }}
             >
-              AI Leaving Cert Grader
-            </Typography>
-            <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.6)', display: 'block', lineHeight: 1 }}>
-              Faster, Fairer, Teacher-Supervised
+              AI Leaving Cert
             </Typography>
           </Box>
         </Box>

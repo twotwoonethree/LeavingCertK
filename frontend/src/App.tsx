@@ -14,7 +14,7 @@ import ResearchPage from './pages/ResearchPage';
 
 function App() {
   // useMemo ensures the theme is not recalculated on every render
-  const theme = useMemo(() => getAppTheme(), []);
+  const theme = useMemo(() => getAppTheme('dark'), []);
 
   return (
     <ThemeProvider theme={theme}>

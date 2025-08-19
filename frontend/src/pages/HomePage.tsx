@@ -1,8 +1,7 @@
 // pages/HomePage.tsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Box,
-  Button,
   Container,
   Typography,
   Modal,
@@ -13,19 +12,28 @@ import {
   GlobalStyles,
 } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import SpeedIcon from '@mui/icons-material/Speed';
-import GavelIcon from '@mui/icons-material/Gavel';
-import HubIcon from '@mui/icons-material/Hub';
-import HowToRegIcon from '@mui/icons-material/HowToReg';
-import PsychologyIcon from '@mui/icons-material/Psychology';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import ScheduleIcon from '@mui/icons-material/Schedule';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import FeedbackForm from '../components/FeedbackForm';
 import MeetTheMakers, { defaultMakers } from '../components/MeetTheMakers';
+import AnimatedArrowButton from '../components/AnimatedArrowButton';
+import { LaunchFilledButton, FillWipeButton } from '../components/AnimatedButtons';
 import type { Theme, SxProps } from '@mui/material/styles';
+
+// Import background images
+import bothImage from '../assets/both.png';
+import studentImage from '../assets/student.png';
+import teacherImage from '../assets/teacher.png';
+
+// Import custom icons
+import mathTeacherIcon from '../assets/undraw_math_ldpv.svg';
+import aiPanelReviewIcon from '../assets/AiPanelReview.svg';
+import confidenceCheckIcon from '../assets/ConfidenceCheck.svg';
+import superiorAccuracyIcon from '../assets/SuperiorAccuracy.svg';
+import perfectConsistencyIcon from '../assets/PerfectConsistency.svg';
+import massiveEfficiencyIcon from '../assets/MassiveEfficiency.svg';
+import fullTransparencyIcon from '../assets/FullTransparency.svg';
 
 const modalStyle = {
   position: 'absolute' as 'absolute',
@@ -84,72 +92,19 @@ const HomePage = () => {
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
 
-  const badgeBoxSx = (theme: Theme) => ({
-    px: 2,
-    py: 1.5,
-    width: '100%',
-    minHeight: '60px',
-    borderRadius: 2,
-    backdropFilter: 'blur(10px)',
-    WebkitBackdropFilter: 'blur(10px)',
-    backgroundColor: 'rgba(255, 255, 255, 0.08)',
-    border: '1px solid rgba(255, 255, 255, 0.12)',
-    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
-    color: theme.palette.text.primary,
-    position: 'relative',
-    overflow: 'hidden',
-    display: 'flex',
-    alignItems: 'center',
-    '&::before': {
-      content: '""',
-      position: 'absolute',
-      top: 0,
-      left: '-100%',
-      width: '100%',
-      height: '100%',
-      background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)',
-      animation: 'shimmer 2s infinite',
-    },
-    '@keyframes shimmer': {
-      '0%': { left: '-100%' },
-      '100%': { left: '100%' },
-    },
-  });
-
-  const descBoxSx = (theme: Theme) => ({
-    mt: 2,
-    p: 2.5,
-    minHeight: '80px',
-    borderRadius: 2,
-    backdropFilter: 'blur(15px)',
-    WebkitBackdropFilter: 'blur(15px)',
-    backgroundColor: 'rgba(0, 0, 0, 0.25)',
-    border: '1px solid rgba(255, 255, 255, 0.08)',
-    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
-    color: theme.palette.text.secondary,
-    position: 'relative',
-    display: 'flex',
-    alignItems: 'center',
-    flex: 1,
-    '&::before': {
-      content: '""',
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      height: '1px',
-      background: 'linear-gradient(90deg, transparent, rgba(243, 156, 18, 0.5), transparent)',
-    },
-  });
 
   return (
     <>
       <GlobalStyles styles={keyframes} />
       <Box sx={{ 
         background: 'linear-gradient(135deg, rgba(15, 15, 35, 0.9) 0%, rgba(26, 26, 46, 0.8) 100%)',
-        pt: 12, 
-        pb: 8,
+        minHeight: { xs: 'auto', md: '100vh' },
+        pt: { xs: 12, md: 0 }, 
+        pb: { xs: 8, md: 0 },
+        display: { xs: 'block', md: 'flex' },
+        alignItems: { md: 'center' },
         position: 'relative',
+        overflow: 'hidden',
         '&::before': {
           content: '""',
           position: 'absolute',
@@ -159,9 +114,44 @@ const HomePage = () => {
           bottom: 0,
           background: 'radial-gradient(ellipse at center, rgba(233, 69, 96, 0.1) 0%, transparent 70%)',
           pointerEvents: 'none',
+          zIndex: 1,
+        },
+        // Background images - mobile: student only, desktop: all three
+        '&::after': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: {
+            xs: `
+              linear-gradient(
+                rgba(15, 15, 35, 0.8) 0%,
+                rgba(15, 15, 35, 0.6) 50%,
+                rgba(15, 15, 35, 0.8) 100%
+              ),
+              url(${studentImage}) right center/143% 100% no-repeat
+            `,
+            md: `
+              linear-gradient(to right, 
+                rgba(15, 15, 35, 0.85) 0%,
+                rgba(15, 15, 35, 0.7) 33%,
+                rgba(15, 15, 35, 0.7) 66%,
+                rgba(15, 15, 35, 0.85) 100%
+              ),
+              url(${bothImage}) left/33.33% 100% no-repeat,
+              url(${studentImage}) center/33.33% 100% no-repeat,
+              url(${teacherImage}) right/33.33% 100% no-repeat
+            `
+          },
+          opacity: 0.3,
+          filter: 'blur(1px) saturate(0.7)',
+          pointerEvents: 'none',
+          zIndex: 0,
         },
       }}>
-        <Container maxWidth="md">
+        <Container maxWidth="md" sx={{ position: 'relative', zIndex: 2 }}>
           <Typography
             component="h1"
             variant="h2"
@@ -170,10 +160,12 @@ const HomePage = () => {
             gutterBottom
             sx={{ 
               fontWeight: 800,
-              fontSize: { xs: '2.5rem', md: '3.5rem' },
+              fontSize: { xs: '3.2rem', md: '4.5rem' },
               position: 'relative',
-              zIndex: 1,
-              mb: 3,
+              zIndex: 3,
+              mb: { xs: 12, md: 16 },
+              textShadow: '0 2px 8px rgba(0, 0, 0, 0.6)',
+              transform: 'translateY(-78px)',
             }}
           >
             Faster, Fairer Leaving Cert Grading
@@ -184,13 +176,14 @@ const HomePage = () => {
             color="text.secondary" 
             paragraph
             sx={{
-              fontSize: { xs: '1.2rem', md: '1.4rem' },
+              fontSize: { xs: '1.0rem', md: '1.3rem' },
               lineHeight: 1.6,
               maxWidth: '800px',
               mx: 'auto',
               position: 'relative',
-              zIndex: 1,
-              mb: 4,
+              zIndex: 3,
+              mb: 3,
+              textShadow: '0 1px 6px rgba(0, 0, 0, 0.5)',
             }}
           >
             AI-assisted. Teacher-supervised. High-confidence only. Our hybrid system speeds up marking,
@@ -199,26 +192,31 @@ const HomePage = () => {
           <Box sx={{ 
             display: 'flex', 
             justifyContent: 'center', 
-            mt: 6, 
+            mt: 2, 
             gap: 3,
             flexDirection: { xs: 'column', sm: 'row' },
             alignItems: 'center',
             position: 'relative',
-            zIndex: 1,
+            zIndex: 3,
           }}>
-            <Button variant="contained" size="large" onClick={handleOpen}>
-              Share Your Feedback
-            </Button>
-            <Button variant="outlined" size="large" onClick={handleOpen}>
-              Join Early Pilot Interest
-            </Button>
+            <LaunchFilledButton 
+              onClick={handleOpen}
+              label="Share Your Feedback"
+              gradient={['#e94560', '#f39c12', '#ff6b35']}
+            />
+            <FillWipeButton 
+              onClick={handleOpen}
+              label="Join Early Pilot Interest"
+              gradient={['#e94560', '#f39c12', '#ff6b35']}
+              outlineColor="#f39c12"
+            />
           </Box>
         </Container>
       </Box>
 
-      <Container sx={{ py: 8 }} maxWidth="lg">
+      <Container sx={{ pt: 8, pb: 1 }} maxWidth="lg">
         {/* Problem framing */}
-        <Box sx={{ mb: 10, textAlign: 'center' }}>
+        <Box sx={{ mb: 6, textAlign: 'center' }}>
           <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 600 }}>
             The Annual Grading Bottleneck
           </Typography>
@@ -230,7 +228,7 @@ const HomePage = () => {
         </Box>
 
         {/* Stats strip */}
-        <Box sx={{ mb: 8 }}>
+        <Box sx={ {mb :4 }}>
           <Grid container spacing={3}>
             <Grid size={{ xs: 12, sm: 4 }}>
               <Card className="simple-card" sx={{ 
@@ -315,16 +313,19 @@ const HomePage = () => {
             </Grid>
           </Grid>
         </Box>
+      </Container>
 
-        {/* Section divider */}
-        <Box className="section-divider" />
+      {/* Section divider */}
+      <Box className="section-divider" />
+
+      <Container sx={{ pt: 4, pb: 8 }} maxWidth="xl">
         
         {/* Process */}
-        <Box sx={{ mb: 10 }}>
+        <Box sx={{ py: 1, px: { xs: 0, md: 4 } }}>
           <Typography variant="h4" component="h2" gutterBottom align="center" sx={{ fontWeight: 600 }}>
             Our Innovative Approach: A Panel of AI Experts
           </Typography>
-          <Typography variant="body1" color="text.secondary" maxWidth="md" sx={{ mx: 'auto', textAlign: 'center', mb: 4 }}>
+          <Typography variant="body1" color="text.secondary" maxWidth="md" sx={{ mx: 'auto', textAlign: 'center', mb: 6 }}>
             Three specialized AI graders review each answer from different angles, then we apply a strict
             confidence threshold. Anything below the bar goes straight to a teacher for Later Human Review.
           </Typography>
@@ -336,10 +337,19 @@ const HomePage = () => {
             gap: { xs: 2, md: 2 } 
           }}>
             {/* Step 1 */}
-            <Box sx={{ flex: { xs: '1 1 auto', md: '0 1 260px' }, maxWidth: { xs: '100%', md: '260px' }, width: { xs: '100%', md: 'auto' } }}>
-              <Card className="green-border-card" sx={{ height: { md: '250px' }, ...orbVars(201) }}>
+            <Box sx={{ flex: { xs: '1 1 auto', md: '0 1 320px' }, maxWidth: { xs: '100%', md: '320px' }, width: { xs: '100%', md: 'auto' } }}>
+              <Card className="green-border-card" sx={{ height: { md: '400px' }, ...orbVars(201) }}>
                 <CardContent className="green-border-content" sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                  <HowToRegIcon sx={{ color: '#4caf50', fontSize: 32, mb: 2 }} />
+                  <Box 
+                    component="img"
+                    src={mathTeacherIcon}
+                    alt="Math Teacher"
+                    sx={{ 
+                      width: 150,
+                      height: 150,
+                      mb: 2
+                    }} 
+                  />
                   <Box sx={{
                     px: 2,
                     py: 1,
@@ -394,21 +404,36 @@ const HomePage = () => {
               alignItems: 'center', 
               justifyContent: 'center',
               mx: { xs: 0, md: 1 },
-              my: { xs: 1, md: 0 }
-            }}>
-              <ArrowForwardIcon sx={{ 
-                fontSize: 28, 
-                color: '#4caf50',
+              my: { xs: 1, md: 0 },
+              '& > button': {
                 transform: { xs: 'rotate(90deg)', md: 'rotate(0deg)' },
                 transition: 'transform 0.3s ease'
-              }} />
+              }
+            }}>
+              <AnimatedArrowButton
+                size={56}
+                direction="left"
+                fill="#4caf50"
+                ringBase="#4caf50"
+                ringAccent="#66bb6a"
+                ariaLabel="Next step"
+              />
             </Box>
             
             {/* Step 2 */}
-            <Box sx={{ flex: { xs: '1 1 auto', md: '0 1 260px' }, maxWidth: { xs: '100%', md: '260px' }, width: { xs: '100%', md: 'auto' } }}>
-              <Card className="blue-border-card" sx={{ height: { md: '250px' }, ...orbVars(202) }}>
+            <Box sx={{ flex: { xs: '1 1 auto', md: '0 1 320px' }, maxWidth: { xs: '100%', md: '320px' }, width: { xs: '100%', md: 'auto' } }}>
+              <Card className="blue-border-card" sx={{ height: { md: '400px' }, ...orbVars(202) }}>
                 <CardContent className="blue-border-content" sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                  <PsychologyIcon sx={{ color: '#2196f3', fontSize: 32, mb: 2 }} />
+                  <Box 
+                    component="img"
+                    src={aiPanelReviewIcon}
+                    alt="AI Panel Review"
+                    sx={{ 
+                      width: 150,
+                      height: 150,
+                      mb: 2
+                    }} 
+                  />
                   <Box sx={{
                     px: 2,
                     py: 1,
@@ -463,21 +488,36 @@ const HomePage = () => {
               alignItems: 'center', 
               justifyContent: 'center',
               mx: { xs: 0, md: 1 },
-              my: { xs: 1, md: 0 }
-            }}>
-              <ArrowForwardIcon sx={{ 
-                fontSize: 28, 
-                color: '#2196f3',
+              my: { xs: 1, md: 0 },
+              '& > button': {
                 transform: { xs: 'rotate(90deg)', md: 'rotate(0deg)' },
                 transition: 'transform 0.3s ease'
-              }} />
+              }
+            }}>
+              <AnimatedArrowButton
+                size={56}
+                direction="left"
+                fill="#2196f3"
+                ringBase="#2196f3"
+                ringAccent="#42a5f5"
+                ariaLabel="Next step"
+              />
             </Box>
             
             {/* Step 3 */}
-            <Box sx={{ flex: { xs: '1 1 auto', md: '0 1 260px' }, maxWidth: { xs: '100%', md: '260px' }, width: { xs: '100%', md: 'auto' } }}>
-              <Card className="green-border-card" sx={{ height: { md: '250px' }, ...orbVars(203) }}>
+            <Box sx={{ flex: { xs: '1 1 auto', md: '0 1 320px' }, maxWidth: { xs: '100%', md: '320px' }, width: { xs: '100%', md: 'auto' } }}>
+              <Card className="green-border-card" sx={{ height: { md: '400px' }, ...orbVars(203) }}>
                 <CardContent className="green-border-content" sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                  <CheckCircleOutlineIcon sx={{ color: '#4caf50', fontSize: 32, mb: 2 }} />
+                  <Box 
+                    component="img"
+                    src={confidenceCheckIcon}
+                    alt="Confidence Check"
+                    sx={{ 
+                      width: 150,
+                      height: 150,
+                      mb: 2
+                    }} 
+                  />
                   <Box sx={{
                     px: 2,
                     py: 1,
@@ -529,42 +569,60 @@ const HomePage = () => {
         </Box>
 
         {/* Why different */}
-        <Box sx={{ mb: 10 }}>
+        <Box sx={{ py: 8, px: { xs: 0, md: 4 } }}>
           <Typography variant="h4" component="h2" gutterBottom align="center" sx={{ fontWeight: 600 }}>
             Why Our System is Different
           </Typography>
-          <Grid container spacing={4} sx={{ mt: 2 }}>
+          <Typography variant="body1" color="text.secondary" maxWidth="md" sx={{ mx: 'auto', textAlign: 'center', mb: 6 }}>
+            Our grading stack pairs a three-expert AI ensemble with a 95% confidence bar, full audit trails, and teacher oversight. Routine answers are auto-scored; anything uncertain goes straight to humans—delivering higher accuracy, rock-solid consistency, faster turnaround, and transparent decisions.
+          </Typography>
+          <Grid container spacing={4} sx={{ mt: 4 }}>
             {[
               {
-                icon: <HubIcon fontSize="large" sx={{ color: '#4caf50' }} />,
+                imageSrc: superiorAccuracyIcon,
                 title: 'Superior Accuracy',
                 description: 'Triple-check ensemble plus human oversight minimizes errors and catches edge cases.',
+                cardClass: 'green-border-card',
+                contentClass: 'green-border-content',
               },
               {
-                icon: <GavelIcon fontSize="large" sx={{ color: '#2196f3' }} />,
+                imageSrc: perfectConsistencyIcon,
                 title: 'Perfect Consistency',
                 description: 'Uniform rubric application across scripts—no fatigue, drift, or random leniency.',
+                cardClass: 'blue-border-card',
+                contentClass: 'blue-border-content',
               },
               {
-                icon: <SpeedIcon fontSize="large" sx={{ color: '#4caf50' }} />,
+                imageSrc: massiveEfficiencyIcon,
                 title: 'Massive Efficiency',
                 description: 'Triage routine answers at scale so teachers focus on cases needing judgment.',
+                cardClass: 'green-border-card',
+                contentClass: 'green-border-content',
+                flipped: true,
               },
               {
-                icon: <HowToRegIcon fontSize="large" sx={{ color: '#2196f3' }} />,
+                imageSrc: fullTransparencyIcon,
                 title: 'Full Transparency',
                 description: 'Every AI decision is logged; uncertain cases escalated. Teachers maintain control.',
+                cardClass: 'blue-border-card',
+                contentClass: 'blue-border-content',
               },
             ].map((item, i) => {
-              const isGreenIcon = item.icon.props.sx.color === '#4caf50';
-              const isBlueIcon = item.icon.props.sx.color === '#2196f3';
-              const cardClass = isGreenIcon ? 'green-border-card' : isBlueIcon ? 'blue-border-card' : '';
-              const contentClass = isGreenIcon ? 'green-border-content' : isBlueIcon ? 'blue-border-content' : '';
               return (
               <Grid key={item.title} size={{ xs: 12, sm: 6, md: 3 }}>
-                <Card className={cardClass} sx={{ height: '100%', ...orbVars(301 + i) }}>
-                  <CardContent className={contentClass} sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <Box sx={{ mb: 2, fontSize: 32 }}>{React.cloneElement(item.icon, { sx: { ...item.icon.props.sx, fontSize: 32 } })}</Box>
+                <Card className={item.cardClass} sx={{ height: { md: '400px' }, ...orbVars(301 + i) }}>
+                  <CardContent className={item.contentClass} sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <Box 
+                      component="img"
+                      src={item.imageSrc}
+                      alt={item.title}
+                      sx={{ 
+                        width: 150,
+                        height: 150,
+                        mb: 2,
+                        transform: item.flipped ? 'scaleX(-1)' : 'none'
+                      }} 
+                    />
                     <Box sx={{
                       px: 2,
                       py: 1,
@@ -605,7 +663,7 @@ const HomePage = () => {
                       display: 'flex',
                       alignItems: 'center'
                     }}>
-                      <Typography color="text.secondary" sx={{ fontSize: '0.85rem', lineHeight: 1.4, textAlign: 'center' }}>
+                      <Typography sx={{ fontSize: '0.85rem', lineHeight: 1.4, textAlign: 'center' }}>
                         {item.description}
                       </Typography>
                     </Box>
@@ -616,13 +674,16 @@ const HomePage = () => {
           </Grid>
         </Box>
 
+        {/* Section divider */}
+        <Box className="section-divider" />
+
         {/* Guardrails */}
-        <Box sx={{ mb: 10, maxWidth: 'md', mx: 'auto', textAlign: 'center' }}>
+        <Box sx={{ pt: 4, pb: 4, maxWidth: 'md', mx: 'auto', textAlign: 'center' }}>
           <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 600 }}>
             Built-In Guardrails (Trust by Design)
           </Typography>
-          <Typography color="text.secondary" sx={{ mb: 2 }}>
-            Safety isn’t a feature—it’s the architecture.
+          <Typography color="text.secondary" sx={{ mb: 3 }}>
+            Safety isn't a feature—it's the architecture.
           </Typography>
           <Box sx={{ textAlign: 'left' }}>
             <Typography sx={{ mb: 1.5 }}>
@@ -643,55 +704,97 @@ const HomePage = () => {
           </Box>
         </Box>
 
-        {/* Skeptics’ Q&A */}
-        <Box sx={{ mb: 10 }}>
+        {/* Skeptics' Q&A */}
+        <Box sx={{ pt: 4, pb: 8 }}>
           <Typography variant="h4" component="h2" gutterBottom align="center" sx={{ fontWeight: 600 }}>
-            Skeptics’ Questions — Straight Answers
+            Skeptics' Questions — Straight Answers
           </Typography>
-          <Grid container spacing={4} sx={{ mt: 1 }}>
+          <Typography variant="body1" color="text.secondary" maxWidth="md" sx={{ mx: 'auto', textAlign: 'center', mb: 6 }}>
+            We hear the concerns. Our approach follows UNESCO/OECD guidance: human-centred AI, teacher oversight, transparency, and clear guardrails—so low-confidence cases go straight to humans and nothing is 'black box.'
+          </Typography>
+          <Grid container spacing={4} sx={{ mt: 4 }}>
             {[
               {
-                title: '“Will AI cost me marks?”',
+                title: '"Will AI cost me marks?"',
                 body:
                   'No. The AI never guesses; low-confidence answers auto-escalate to teachers. Consistent rubric checks also reduce missed partial credit.',
+                color: '#ab47bc',
               },
               {
-                title: '“Can AI judge creativity?”',
+                title: '"Can AI judge creativity?"',
                 body:
                   'For subjective work, we use rubric + example comparison—and keep humans in charge. Novel answers tend to lower AI confidence and route to a teacher.',
+                color: '#9c27b0',
               },
               {
-                title: '“Are teachers being replaced?”',
+                title: '"Are teachers being replaced?"',
                 body:
                   'No. Teachers define standards, handle edge cases, and audit outcomes. AI removes drudgery so educators focus on judgement.',
+                color: '#8e24aa',
               },
             ].map((q) => (
               <Grid key={q.title} size={{ xs: 12, md: 4 }}>
-                <Card className="simple-card" sx={{ height: '100%' }}>
-                  <CardContent className="simple-content" sx={{ p: 3, display: 'flex', flexDirection: 'column' }}>
-                    <Box sx={badgeBoxSx}>
-                      <Typography variant="h6">{q.title}</Typography>
-                    </Box>
-                    <Box sx={descBoxSx}>
-                      <Typography color="text.secondary">{q.body}</Typography>
-                    </Box>
-                  </CardContent>
-                </Card>
+                <Box 
+                  sx={{ 
+                    height: '100%',
+                    p: { xs: 2, sm: 2.5 },
+                    background: `linear-gradient(135deg, ${q.color}18, ${q.color}08)`,
+                    border: `1px solid ${q.color}40`,
+                    borderRadius: 2,
+                    borderLeft: `4px solid ${q.color}`,
+                    transition: 'all 0.3s ease',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    '&:hover': {
+                      borderColor: `${q.color}80`,
+                      boxShadow: `0 4px 15px ${q.color}40`,
+                    }
+                  }}
+                >
+                  <Typography 
+                    variant="h6" 
+                    sx={{ 
+                      fontWeight: 700, 
+                      color: q.color, 
+                      mb: 2,
+                      fontSize: { xs: '1rem', sm: '1.1rem' },
+                      wordWrap: 'break-word',
+                      overflowWrap: 'break-word'
+                    }}
+                  >
+                    {q.title}
+                  </Typography>
+                  <Typography 
+                    sx={{ 
+                      lineHeight: 1.6, 
+                      color: 'rgba(255, 255, 255, 0.9)', 
+                      fontSize: { xs: '0.85rem', sm: '0.95rem' },
+                      flex: 1,
+                      wordWrap: 'break-word',
+                      overflowWrap: 'break-word'
+                    }}
+                  >
+                    {q.body}
+                  </Typography>
+                </Box>
               </Grid>
             ))}
           </Grid>
         </Box>
 
         {/* Social Proof */}
-        <Box sx={{ mb: 10 }}>
+        <Box sx={{ pt: 0, pb: 6 }}>
           <Typography variant="h4" component="h2" gutterBottom align="center" sx={{ fontWeight: 600 }}>
             What People Are Saying
           </Typography>
-          <Grid container spacing={4} sx={{ mt: 1 }}>
+          <Typography variant="body1" color="text.secondary" maxWidth="md" sx={{ mx: 'auto', textAlign: 'center', mb: 6 }}>
+            Dialogue first. Ireland is actively exploring AI for marking; we're committed to listening sessions, transparent evaluations, and rapid iteration with educators at the table.
+          </Typography>
+          <Grid container spacing={4} sx={{ mt: 4 }}>
             {[
-              { quote: '“If this gets results back on time, I’m all for it.”', role: 'Leaving Cert student' },
-              { quote: '“Marking hundreds of scripts is brutal—this could be a lifesaver for teachers.”', role: 'Secondary school teacher' },
-              { quote: '“As long as teachers have final say, speeding up the process makes sense.”', role: 'Parent representative' },
+              { quote: '"If this gets results back on time, I\'m all for it."', role: 'Leaving Cert student' },
+              { quote: '"Marking hundreds of scripts is brutal—this could be a lifesaver for teachers."', role: 'Secondary school teacher' },
+              { quote: '"As long as teachers have final say, speeding up the process makes sense."', role: 'Parent representative' },
             ].map((s, i) => (
               <Grid key={i} size={{ xs: 12, md: 4 }}>
                 <Card className="simple-card" sx={{ height: '100%', textAlign: 'center' }}>
@@ -705,8 +808,11 @@ const HomePage = () => {
           </Grid>
         </Box>
 
+        {/* Section divider */}
+        <Box className="section-divider" />
+
         {/* Makers / Team */}
-        <Box sx={{ mb: 10, py: 8 }}>
+        <Box sx={{ pt: 4, pb: 8 }}>
           <Typography variant="h4" component="h2" gutterBottom align="center" sx={{ fontWeight: 600 }}>
             Meet the Makers
           </Typography>
@@ -719,16 +825,23 @@ const HomePage = () => {
         </Box>
 
         {/* Final CTA */}
-        <Box sx={{ textAlign: 'center' }}>
+        <Box sx={{ 
+          textAlign: 'center',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center'
+        }}>
           <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 600 }}>
             Help Shape the Future of Education
           </Typography>
-          <Typography variant="body1" color="text.secondary" maxWidth="md" sx={{ mx: 'auto', mb: 3 }}>
-            We’re building this with students, teachers, and parents. Tell us what to keep, fix, or change.
+          <Typography variant="body1" color="text.secondary" maxWidth="md" sx={{ mx: 'auto', mb: 6 }}>
+            We're building this with students, teachers, and parents. Tell us what to keep, fix, or change.
           </Typography>
-          <Button variant="contained" size="large" onClick={handleOpen}>
-            Share Your Feedback
-          </Button>
+          <LaunchFilledButton 
+            onClick={handleOpen}
+            label="Share Your Feedback"
+            gradient={['#e94560', '#f39c12', '#ff6b35']}
+          />
         </Box>
       </Container>
 
