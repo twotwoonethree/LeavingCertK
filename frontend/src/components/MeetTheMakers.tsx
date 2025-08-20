@@ -28,7 +28,7 @@ export interface MeetTheMakersProps {
   cardWidth?: number;
   cardHeight?: number;
   speedSec?: number;
-  reverse?: boolean; // true => move to the right
+  reverse?: boolean;
 }
 
 // Pre-configured team list
@@ -42,10 +42,10 @@ export const defaultMakers: Maker[] = [
   },
   {
     id: "nikita-kolesnik",
-    name: "Nikita Kolesnik",
+    name: "Nikita Akella",
     role: "Founder, Architech – Empowering Everyone to Harness AI with Pro-Level Prompts",
     imageUrl: NikitaKolesnikImg,
-    socials: [{ type: "linkedin", url: "https://www.linkedin.com/in/nikita-kolesnik-41b728368" }],
+    socials: [{ type: "linkedin", url: "https://www.linkedin.com/in/nikita-akella-41b728368/" }],
   },
   {
     id: "piush-vaish",
@@ -84,9 +84,6 @@ export const defaultMakers: Maker[] = [
   },
 ];
 
-
-const clamp = (val: number, min: number, max: number) => Math.max(min, Math.min(max, val));
-
 const MeetTheMakers: React.FC<MeetTheMakersProps> = ({
   members,
   cardWidth = 240,
@@ -94,51 +91,47 @@ const MeetTheMakers: React.FC<MeetTheMakersProps> = ({
   speedSec = 12,
   reverse = true,
 }) => {
-  const qty = members.length || 1;
+  // Simple mobile carousel state
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const touchStartX = useRef<number>(0);
 
-  // Mobile swipe state
-  const [index, setIndex] = useState(0);
-  const startX = useRef<number | null>(null);
-  const deltaX = useRef(0);
-  const trackRef = useRef<HTMLDivElement | null>(null);
+  // Triple the array for infinite scrolling: [...members, ...members, ...members]
+  const tripleMembers = useMemo(() => {
+    return [...members, ...members, ...members];
+  }, [members]);
 
-  const handlePointerDown = (e: React.PointerEvent) => {
-    startX.current = e.clientX;
-    (e.target as Element).setPointerCapture?.(e.pointerId);
+  const totalMembers = members.length;
+  const startIndex = totalMembers; // Start at middle set
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
   };
-  const handlePointerMove = (e: React.PointerEvent) => {
-    if (startX.current === null) return;
-    deltaX.current = e.clientX - startX.current;
-    if (trackRef.current) {
-      trackRef.current.style.transition = "none";
-      trackRef.current.style.transform = `translateX(calc(${-index * 100}% + ${deltaX.current}px))`;
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchStartX.current - touchEndX;
+    
+    if (Math.abs(diff) < 50) return;
+    
+    if (diff > 0) {
+      // Swipe left - next
+      setCurrentIndex(prev => (prev + 1) % totalMembers);
+    } else {
+      // Swipe right - previous
+      setCurrentIndex(prev => (prev - 1 + totalMembers) % totalMembers);
     }
-  };
-  const handlePointerUp = () => {
-    if (startX.current === null) return;
-    const threshold = 60;
-    if (Math.abs(deltaX.current) > threshold) {
-      const dir = deltaX.current > 0 ? -1 : 1;
-      setIndex((prev) => clamp(prev + dir, 0, qty - 1));
-    } else if (trackRef.current) {
-      trackRef.current.style.transition = "transform 300ms ease";
-      trackRef.current.style.transform = `translateX(${-index * 100}%)`;
-    }
-    startX.current = null;
-    deltaX.current = 0;
   };
 
   const cssVars = useMemo<React.CSSProperties>(
     () => ({
       ["--mtm-width" as any]: `${cardWidth}px`,
       ["--mtm-height" as any]: `${cardHeight}px`,
-      ["--mtm-quantity" as any]: qty,
+      ["--mtm-quantity" as any]: totalMembers,
       ["--mtm-speed" as any]: `${speedSec}s`,
       ["--mtm-edge-mask" as any]: `linear-gradient(to right, transparent, #000 10%, #000 90%, transparent)`,
     }),
-    [cardWidth, cardHeight, qty, speedSec]
+    [cardWidth, cardHeight, totalMembers, speedSec]
   );
-
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -150,6 +143,7 @@ const MeetTheMakers: React.FC<MeetTheMakersProps> = ({
           .mtm-mobile { display: block; }
         }
 
+        /* Desktop carousel */
         .mtm-slider {
           width: 100%;
           height: var(--mtm-height);
@@ -194,14 +188,31 @@ const MeetTheMakers: React.FC<MeetTheMakersProps> = ({
           to   { left: 100%; }
         }
 
-        /* Mobile carousel */
-        .mtm-mobile-wrap { position: relative; overflow: hidden; width: 100%; height: var(--mtm-height); }
-        .mtm-track { display: flex; width: 100%; height: 100%; transition: transform 300ms ease; touch-action: pan-y; }
-        .mtm-slide { flex: 0 0 100%; display: grid; place-items: center; padding: 0 10px; }
+        /* Mobile carousel - SIMPLE approach */
+        .mobile-container {
+          width: 100%;
+          overflow: hidden;
+          position: relative;
+        }
 
+        .mobile-track {
+          display: flex;
+          transition: transform 0.4s ease;
+          width: ${tripleMembers.length * 100}%;
+        }
+
+        .mobile-slide {
+          width: ${100 / tripleMembers.length}%;
+          flex-shrink: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 0 20px;
+          box-sizing: border-box;
+        }
       `}</style>
 
-      {/* Desktop marquee uses MUI Card to pick up theme overrides */}
+      {/* Desktop marquee */}
       <Box
         className="mtm-desktop mtm-slider"
         style={cssVars as React.CSSProperties}
@@ -229,45 +240,59 @@ const MeetTheMakers: React.FC<MeetTheMakersProps> = ({
         </div>
       </Box>
 
-      {/* Mobile swipe */}
-      <Box className="mtm-mobile" style={cssVars as React.CSSProperties}>
-        {/* Swipe instruction */}
-        <Typography 
-          variant="body2" 
-          sx={{ 
-            textAlign: 'center', 
-            mb: 2, 
-            color: 'text.secondary',
-            fontSize: '0.875rem',
-            fontWeight: 500
-          }}
-        >
-          Swipe for More
-        </Typography>
-        
-        <Box className="mtm-mobile-wrap">
-          <Box
-            ref={trackRef}
-            className="mtm-track"
-            sx={{ transform: `translateX(${-index * 100}%)` }}
-            onPointerDown={handlePointerDown}
-            onPointerMove={handlePointerMove}
-            onPointerUp={handlePointerUp}
-            onPointerCancel={handlePointerUp}
+      {/* Mobile carousel */}
+      <Box className="mtm-mobile">
+        {/* Indicators */}
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2, gap: 1 }}>
+          <Typography 
+            variant="body2" 
+            sx={{ 
+              color: 'text.secondary',
+              fontSize: '0.875rem',
+              fontWeight: 500
+            }}
           >
-            {members.map((m) => {
-              return (
-                <Box key={m.id} className="mtm-slide">
-                  <MakerCard3D 
-                    maker={m}
-                    width={cardWidth}
-                    height={cardHeight}
-                  />
-                </Box>
-              );
-            })}
+            Swipe for More
+          </Typography>
+          <Box sx={{ display: 'flex', gap: 0.5 }}>
+            {members.map((_, i) => (
+              <Box
+                key={i}
+                sx={{
+                  width: 8,
+                  height: 8,
+                  borderRadius: '50%',
+                  backgroundColor: i === currentIndex ? '#f39c12' : 'rgba(255, 255, 255, 0.3)',
+                  transition: 'background-color 0.3s ease',
+                }}
+              />
+            ))}
           </Box>
+        </Box>
 
+        {/* Simple working carousel */}
+        <Box 
+          className="mobile-container"
+          sx={{ height: cardHeight }}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          <Box
+            className="mobile-track"
+            sx={{
+              transform: `translateX(-${(startIndex + currentIndex) * (100 / tripleMembers.length)}%)`
+            }}
+          >
+            {tripleMembers.map((member, index) => (
+              <Box key={`${member.id}-${index}`} className="mobile-slide">
+                <MakerCard3D 
+                  maker={member}
+                  width={cardWidth}
+                  height={cardHeight}
+                />
+              </Box>
+            ))}
+          </Box>
         </Box>
       </Box>
     </Box>

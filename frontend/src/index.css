@@ -254,3 +254,23 @@ body {
 .stats-icon {
   animation: pulse 2s ease-in-out infinite !important;
 }
+
+/* Blockly workspace styling */
+.blockly-wrapper {
+  height: 420px;
+  width: 100%;
+}
+
+.blocklyDiv {
+  height: 100%;
+  width: 100%;
+}
+
+.blocklyToolboxDiv {
+  background-color: rgba(26, 26, 46, 0.9) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.blocklyTreeLabel {
+  color: #ffffff !important;
+}

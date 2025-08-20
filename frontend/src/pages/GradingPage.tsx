@@ -184,7 +184,7 @@ const GradingPage: React.FC = () => {
         {view === 'animation' && <AnimationSection />}
 
         {view === 'accuracy' && (
-          <Stack sx={{ py: 2 }} spacing={2}>
+          <Stack sx={{ py: 2, alignItems: 'center' }} spacing={2}>
             <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" alignItems={{ xs: 'stretch', sm: 'center' }} spacing={2}>
               <Typography 
                 variant="h5"

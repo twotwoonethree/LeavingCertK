@@ -32,6 +32,12 @@ import aiPanelReviewIcon from '../assets/AiPanelReview.svg';
 import confidenceCheckIcon from '../assets/ConfidenceCheck.svg';
 import superiorAccuracyIcon from '../assets/SuperiorAccuracy.svg';
 import perfectConsistencyIcon from '../assets/PerfectConsistency.svg';
+import systemDifferentIcon from '../assets/systemDifferent.svg';
+import guardrailsIcon from '../assets/Guardrails.svg';
+import bottleneckIcon from '../assets/Bottleneck.svg';
+import aiExpertsIcon from '../assets/AIexperts.svg';
+import concernIcon from '../assets/Concern.svg';
+import peopleSayingIcon from '../assets/PeopleSaying.svg';
 import massiveEfficiencyIcon from '../assets/MassiveEfficiency.svg';
 import fullTransparencyIcon from '../assets/FullTransparency.svg';
 
@@ -156,7 +162,6 @@ const HomePage = () => {
             component="h1"
             variant="h2"
             align="center"
-            color="text.primary"
             gutterBottom
             sx={{ 
               fontWeight: 800,
@@ -164,8 +169,12 @@ const HomePage = () => {
               position: 'relative',
               zIndex: 3,
               mb: { xs: 12, md: 16 },
-              textShadow: '0 2px 8px rgba(0, 0, 0, 0.6)',
               transform: 'translateY(-78px)',
+              background: 'linear-gradient(45deg, #e94560, #f39c12, #ff6b35) !important',
+              WebkitBackgroundClip: 'text !important',
+              WebkitTextFillColor: 'transparent !important',
+              backgroundClip: 'text !important',
+              color: 'transparent !important',
             }}
           >
             Faster, Fairer Leaving Cert Grading
@@ -216,15 +225,71 @@ const HomePage = () => {
 
       <Container sx={{ pt: 8, pb: 1 }} maxWidth="lg">
         {/* Problem framing */}
-        <Box sx={{ mb: 6, textAlign: 'center' }}>
-          <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 600 }}>
-            The Annual Grading Bottleneck
-          </Typography>
-          <Typography variant="body1" color="text.secondary" maxWidth="md" sx={{ mx: 'auto' }}>
-            Rising candidate numbers and examiner shortages slow results, increase stress, and strain teachers.
-            We believe there's a smarter, safer way: let AI handle the routine checks under strict guardrails,
-            and keep teachers in charge of the edge cases.
-          </Typography>
+        <Box sx={{ mb: 6 }}>
+          {/* Mobile layout - stacked */}
+          <Box sx={{ 
+            display: { xs: 'block', md: 'none' },
+            textAlign: 'center'
+          }}>
+            <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 600 }}>
+              The Annual Grading Bottleneck
+            </Typography>
+            
+            <Typography variant="body1" color="text.secondary" maxWidth="md" sx={{ mx: 'auto', mb: 4 }}>
+              Rising candidate numbers and examiner shortages slow results, increase stress, and strain teachers.
+              We believe there's a smarter, safer way: let AI handle the routine checks under strict guardrails,
+              and keep teachers in charge of the edge cases.
+            </Typography>
+            
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <Box 
+                component="img"
+                src={bottleneckIcon}
+                alt="Annual Grading Bottleneck Illustration"
+                sx={{ 
+                  width: 250,
+                  height: 'auto',
+                  maxWidth: '100%'
+                }}
+              />
+            </Box>
+          </Box>
+
+          {/* Desktop layout - 2 columns */}
+          <Box sx={{ 
+            display: { xs: 'none', md: 'flex' },
+            alignItems: 'center',
+            gap: 4
+          }}>
+            <Box sx={{ flex: 1 }}>
+              <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 600 }}>
+                The Annual Grading Bottleneck
+              </Typography>
+              
+              <Typography variant="body1" color="text.secondary">
+                Rising candidate numbers and examiner shortages slow results, increase stress, and strain teachers.
+                We believe there's a smarter, safer way: let AI handle the routine checks under strict guardrails,
+                and keep teachers in charge of the edge cases.
+              </Typography>
+            </Box>
+            
+            <Box sx={{ 
+              flex: '0 0 auto',
+              display: 'flex',
+              justifyContent: 'center'
+            }}>
+              <Box 
+                component="img"
+                src={bottleneckIcon}
+                alt="Annual Grading Bottleneck Illustration"
+                sx={{ 
+                  width: 250,
+                  height: 'auto',
+                  maxWidth: '100%'
+                }}
+              />
+            </Box>
+          </Box>
         </Box>
 
         {/* Stats strip */}
@@ -322,13 +387,70 @@ const HomePage = () => {
         
         {/* Process */}
         <Box sx={{ py: 1, px: { xs: 0, md: 4 } }}>
-          <Typography variant="h4" component="h2" gutterBottom align="center" sx={{ fontWeight: 600 }}>
-            Our Innovative Approach: A Panel of AI Experts
-          </Typography>
-          <Typography variant="body1" color="text.secondary" maxWidth="md" sx={{ mx: 'auto', textAlign: 'center', mb: 6 }}>
-            Three specialized AI graders review each answer from different angles, then we apply a strict
-            confidence threshold. Anything below the bar goes straight to a teacher for Later Human Review.
-          </Typography>
+          {/* Mobile layout - stacked */}
+          <Box sx={{ 
+            display: { xs: 'block', md: 'none' },
+            textAlign: 'center',
+            mb: 6
+          }}>
+            <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 600 }}>
+              Our Innovative Approach: A Panel of AI Experts
+            </Typography>
+            
+            <Typography variant="body1" color="text.secondary" maxWidth="md" sx={{ mx: 'auto', mb: 4 }}>
+              Three specialized AI graders review each answer from different angles, then we apply a strict
+              confidence threshold. Anything below the bar goes straight to a teacher for Later Human Review.
+            </Typography>
+            
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <Box 
+                component="img"
+                src={aiExpertsIcon}
+                alt="AI Experts Panel Illustration"
+                sx={{ 
+                  width: 250,
+                  height: 'auto',
+                  maxWidth: '100%'
+                }}
+              />
+            </Box>
+          </Box>
+
+          {/* Desktop layout - 2 columns (image left, text right) */}
+          <Box sx={{ 
+            display: { xs: 'none', md: 'flex' },
+            alignItems: 'center',
+            gap: 4,
+            mb: 6
+          }}>
+            <Box sx={{ 
+              flex: '0 0 auto',
+              display: 'flex',
+              justifyContent: 'center'
+            }}>
+              <Box 
+                component="img"
+                src={aiExpertsIcon}
+                alt="AI Experts Panel Illustration"
+                sx={{ 
+                  width: 250,
+                  height: 'auto',
+                  maxWidth: '100%'
+                }}
+              />
+            </Box>
+
+            <Box sx={{ flex: 1 }}>
+              <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 600 }}>
+                Our Innovative Approach: A Panel of AI Experts
+              </Typography>
+              
+              <Typography variant="body1" color="text.secondary">
+                Three specialized AI graders review each answer from different angles, then we apply a strict
+                confidence threshold. Anything below the bar goes straight to a teacher for Later Human Review.
+              </Typography>
+            </Box>
+          </Box>
           <Box sx={{ 
             display: 'flex', 
             flexDirection: { xs: 'column', md: 'row' },
@@ -570,12 +692,27 @@ const HomePage = () => {
 
         {/* Why different */}
         <Box sx={{ py: 8, px: { xs: 0, md: 4 } }}>
-          <Typography variant="h4" component="h2" gutterBottom align="center" sx={{ fontWeight: 600 }}>
+          <Typography variant="h4" component="h2" gutterBottom align="center" sx={{ fontWeight: 600, mb: 4 }}>
             Why Our System is Different
           </Typography>
+          
+          <Box sx={{ display: 'flex', justifyContent: 'center', mb: 4 }}>
+            <Box 
+              component="img"
+              src={systemDifferentIcon}
+              alt="System Different Illustration"
+              sx={{ 
+                width: 440,
+                height: 'auto',
+                maxWidth: '100%'
+              }}
+            />
+          </Box>
+          
           <Typography variant="body1" color="text.secondary" maxWidth="md" sx={{ mx: 'auto', textAlign: 'center', mb: 6 }}>
             Our grading stack pairs a three-expert AI ensemble with a 95% confidence bar, full audit trails, and teacher oversight. Routine answers are auto-scored; anything uncertain goes straight to humans—delivering higher accuracy, rock-solid consistency, faster turnaround, and transparent decisions.
           </Typography>
+          
           <Grid container spacing={4} sx={{ mt: 4 }}>
             {[
               {
@@ -678,40 +815,175 @@ const HomePage = () => {
         <Box className="section-divider" />
 
         {/* Guardrails */}
-        <Box sx={{ pt: 4, pb: 4, maxWidth: 'md', mx: 'auto', textAlign: 'center' }}>
-          <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 600 }}>
-            Built-In Guardrails (Trust by Design)
-          </Typography>
-          <Typography color="text.secondary" sx={{ mb: 3 }}>
-            Safety isn't a feature—it's the architecture.
-          </Typography>
-          <Box sx={{ textAlign: 'left' }}>
-            <Typography sx={{ mb: 1.5 }}>
-              • <strong>High-confidence only:</strong> AI grades are accepted only at ≥95% confidence; everything else goes to Later Human Review.
+        <Box sx={{ pt: 4, pb: 4 }}>
+          {/* Mobile layout - stacked */}
+          <Box sx={{ 
+            display: { xs: 'block', md: 'none' },
+            textAlign: 'center',
+            mb: 6
+          }}>
+                          <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 600, mb: 4 }}>
+              Built-In Guardrails
+            </Typography>  
+                        <Box sx={{ display: 'flex', justifyContent: 'center', mb: 4 }}>
+
+              
+              <Box 
+                component="img"
+                src={guardrailsIcon}
+                alt="Guardrails Illustration"
+                sx={{ 
+                  width: 440,
+                  height: 'auto',
+                  maxWidth: '100%'
+                }}
+              />
+            </Box>
+            <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 600, mb: 4 }}>
+            (Trust by Design)
             </Typography>
-            <Typography sx={{ mb: 1.5 }}>
-              • <strong>OCR sanity checks:</strong> Low-confidence handwriting recognition is corrected by humans before any AI grading.
+            
+
+            
+            <Typography color="text.secondary" sx={{ mb: 3 }}>
+              Safety isn't a feature—it's the architecture.
             </Typography>
-            <Typography sx={{ mb: 1.5 }}>
-              • <strong>Teacher-defined rules:</strong> Rubrics, keys, and examples come from examiners. AI applies—never invents—criteria.
-            </Typography>
-            <Typography sx={{ mb: 1.5 }}>
-              • <strong>Auditability:</strong> Per-question JSON trail (sub-scores + confidence) enables spot checks and appeals.
-            </Typography>
-            <Typography>
-              • <strong>Human in the loop:</strong> Teachers moderate uncertainty, adjudicate edge cases, and audit the system.
-            </Typography>
+            <Box sx={{ textAlign: 'left' }}>
+              <Typography sx={{ mb: 1.5 }}>
+                • <strong>High-confidence only:</strong> AI grades are accepted only at ≥95% confidence; everything else goes to Later Human Review.
+              </Typography>
+              <Typography sx={{ mb: 1.5 }}>
+                • <strong>OCR sanity checks:</strong> Low-confidence handwriting recognition is corrected by humans before any AI grading.
+              </Typography>
+              <Typography sx={{ mb: 1.5 }}>
+                • <strong>Teacher-defined rules:</strong> Rubrics, keys, and examples come from examiners. AI applies—never invents—criteria.
+              </Typography>
+              <Typography sx={{ mb: 1.5 }}>
+                • <strong>Auditability:</strong> Per-question JSON trail (sub-scores + confidence) enables spot checks and appeals.
+              </Typography>
+              <Typography>
+                • <strong>Human in the loop:</strong> Teachers moderate uncertainty, adjudicate edge cases, and audit the system.
+              </Typography>
+            </Box>
+          </Box>
+
+          {/* Desktop layout - 2 columns (icon left, text right) */}
+          <Box sx={{ 
+            display: { xs: 'none', md: 'flex' },
+            alignItems: 'center',
+            gap: 4,
+            mb: 6
+          }}>
+            <Box sx={{ 
+              flex: '0 0 auto',
+              display: 'flex',
+              justifyContent: 'center'
+            }}>
+              <Box 
+                component="img"
+                src={guardrailsIcon}
+                alt="Guardrails Illustration"
+                sx={{ 
+                  width: 440,
+                  height: 'auto',
+                  maxWidth: '100%'
+                }}
+              />
+            </Box>
+
+            <Box sx={{ flex: 1 }}>
+              <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 600, mb: 4 }}>
+                Built-In Guardrails (Trust by Design)
+              </Typography>
+              
+              <Typography color="text.secondary" sx={{ mb: 3 }}>
+                Safety isn't a feature—it's the architecture.
+              </Typography>
+              <Box sx={{ textAlign: 'left' }}>
+                <Typography sx={{ mb: 1.5 }}>
+                  • <strong>High-confidence only:</strong> AI grades are accepted only at ≥95% confidence; everything else goes to Later Human Review.
+                </Typography>
+                <Typography sx={{ mb: 1.5 }}>
+                  • <strong>OCR sanity checks:</strong> Low-confidence handwriting recognition is corrected by humans before any AI grading.
+                </Typography>
+                <Typography sx={{ mb: 1.5 }}>
+                  • <strong>Teacher-defined rules:</strong> Rubrics, keys, and examples come from examiners. AI applies—never invents—criteria.
+                </Typography>
+                <Typography sx={{ mb: 1.5 }}>
+                  • <strong>Auditability:</strong> Per-question JSON trail (sub-scores + confidence) enables spot checks and appeals.
+                </Typography>
+                <Typography>
+                  • <strong>Human in the loop:</strong> Teachers moderate uncertainty, adjudicate edge cases, and audit the system.
+                </Typography>
+              </Box>
+            </Box>
           </Box>
         </Box>
 
         {/* Skeptics' Q&A */}
         <Box sx={{ pt: 4, pb: 8 }}>
-          <Typography variant="h4" component="h2" gutterBottom align="center" sx={{ fontWeight: 600 }}>
-            Skeptics' Questions — Straight Answers
-          </Typography>
-          <Typography variant="body1" color="text.secondary" maxWidth="md" sx={{ mx: 'auto', textAlign: 'center', mb: 6 }}>
-            We hear the concerns. Our approach follows UNESCO/OECD guidance: human-centred AI, teacher oversight, transparency, and clear guardrails—so low-confidence cases go straight to humans and nothing is 'black box.'
-          </Typography>
+          {/* Mobile layout - stacked */}
+          <Box sx={{ 
+            display: { xs: 'block', md: 'none' },
+            textAlign: 'center',
+            mb: 6
+          }}>
+            <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 600 }}>
+              Addressing Concerns — Straight Answers
+            </Typography>
+            
+            <Typography variant="body1" color="text.secondary" maxWidth="md" sx={{ mx: 'auto', mb: 4 }}>
+              We hear the concerns. Our approach follows UNESCO/OECD guidance: human-centred AI, teacher oversight, transparency, and clear guardrails—so low-confidence cases go straight to humans and nothing is 'black box.'
+            </Typography>
+            
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <Box 
+                component="img"
+                src={concernIcon}
+                alt="Addressing Concerns Illustration"
+                sx={{ 
+                  width: 250,
+                  height: 'auto',
+                  maxWidth: '100%'
+                }}
+              />
+            </Box>
+          </Box>
+
+          {/* Desktop layout - 2 columns (text left, icon right) */}
+          <Box sx={{ 
+            display: { xs: 'none', md: 'flex' },
+            alignItems: 'center',
+            gap: 4,
+            mb: 6
+          }}>
+            <Box sx={{ flex: 1 }}>
+              <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 600 }}>
+                Addressing Concerns — Straight Answers
+              </Typography>
+              
+              <Typography variant="body1" color="text.secondary">
+                We hear the concerns. Our approach follows UNESCO/OECD guidance: human-centred AI, teacher oversight, transparency, and clear guardrails—so low-confidence cases go straight to humans and nothing is 'black box.'
+              </Typography>
+            </Box>
+            
+            <Box sx={{ 
+              flex: '0 0 auto',
+              display: 'flex',
+              justifyContent: 'center'
+            }}>
+              <Box 
+                component="img"
+                src={concernIcon}
+                alt="Addressing Concerns Illustration"
+                sx={{ 
+                  width: 250,
+                  height: 'auto',
+                  maxWidth: '100%'
+                }}
+              />
+            </Box>
+          </Box>
           <Grid container spacing={4} sx={{ mt: 4 }}>
             {[
               {
@@ -784,12 +1056,68 @@ const HomePage = () => {
 
         {/* Social Proof */}
         <Box sx={{ pt: 0, pb: 6 }}>
-          <Typography variant="h4" component="h2" gutterBottom align="center" sx={{ fontWeight: 600 }}>
-            What People Are Saying
-          </Typography>
-          <Typography variant="body1" color="text.secondary" maxWidth="md" sx={{ mx: 'auto', textAlign: 'center', mb: 6 }}>
-            Dialogue first. Ireland is actively exploring AI for marking; we're committed to listening sessions, transparent evaluations, and rapid iteration with educators at the table.
-          </Typography>
+          {/* Mobile layout - stacked */}
+          <Box sx={{ 
+            display: { xs: 'block', md: 'none' },
+            textAlign: 'center',
+            mb: 6
+          }}>
+            <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 600 }}>
+              What People Are Saying
+            </Typography>
+            
+            <Typography variant="body1" color="text.secondary" maxWidth="md" sx={{ mx: 'auto', mb: 4 }}>
+              Dialogue first. Ireland is actively exploring AI for marking; we're committed to listening sessions, transparent evaluations, and rapid iteration with educators at the table.
+            </Typography>
+            
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <Box 
+                component="img"
+                src={peopleSayingIcon}
+                alt="What People Are Saying Illustration"
+                sx={{ 
+                  width: 250,
+                  height: 'auto',
+                  maxWidth: '100%'
+                }}
+              />
+            </Box>
+          </Box>
+
+          {/* Desktop layout - 2 columns (icon left, text right) */}
+          <Box sx={{ 
+            display: { xs: 'none', md: 'flex' },
+            alignItems: 'center',
+            gap: 4,
+            mb: 6
+          }}>
+            <Box sx={{ 
+              flex: '0 0 auto',
+              display: 'flex',
+              justifyContent: 'center'
+            }}>
+              <Box 
+                component="img"
+                src={peopleSayingIcon}
+                alt="What People Are Saying Illustration"
+                sx={{ 
+                  width: 250,
+                  height: 'auto',
+                  maxWidth: '100%'
+                }}
+              />
+            </Box>
+
+            <Box sx={{ flex: 1 }}>
+              <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 600 }}>
+                What People Are Saying
+              </Typography>
+              
+              <Typography variant="body1" color="text.secondary">
+                Dialogue first. Ireland is actively exploring AI for marking; we're committed to listening sessions, transparent evaluations, and rapid iteration with educators at the table.
+              </Typography>
+            </Box>
+          </Box>
           <Grid container spacing={4} sx={{ mt: 4 }}>
             {[
               { quote: '"If this gets results back on time, I\'m all for it."', role: 'Leaving Cert student' },

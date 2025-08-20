@@ -1,0 +1,1040 @@
+Here’s a drop-in **README.md** you can put in your repo for your agent to execute. It covers the full idea, file structure, install steps, code you need (frontend + optional Django backend), and how everything fits your TS + React + MUI stack.
+
+---
+
+# Grading Simulator + “Build the Rules” Lab (TS + React + MUI)
+
+An interactive demo for our AI-assisted Leaving Cert grading concept.
+
+* **Play mode:** pick a subject → see a question → choose **A) Guess the points** or **B) Let the Agent decide**. You can compare your guess vs agent output, with visible per-agent subscores (A/B/C), aggregated score, probability, and **Accept vs LHR** decision.
+* **Lab mode (Blockly):** tweak **threshold** and **aggregation** (mean/median/weighted) in a visual block editor. The game uses your Lab settings in real time.
+
+> Tech: React + TypeScript + MUI, **Zustand** (persisted to localStorage), **Framer Motion** for micro-animations, **Blockly** (via `react-blockly`) for the Lab. Optional Django backend (DRF) to submit/display high scores.
+
+---
+
+## 0) Why these libraries
+
+* **Blockly** supports custom JSON blocks/themes and works cleanly in React with wrappers like `react-blockly`. Themes let us match MUI branding, and we can generate code on every workspace change. ([Google for Developers][1], [GitHub][2], [reactrouter.com][3])
+* **Zustand persist** keeps session/progress locally with one middleware; easy to swap storage later. ([zustand.docs.pmnd.rs][4], [npm][5])
+* **Framer Motion (Motion)** gives simple, production-grade animations. ([motion.dev][6])
+* **MUI theming** keeps visuals aligned with our palette. ([MUI][7])
+* **DRF** offers a minimal, secure API for scores; mind CSRF + CORS when calling from the SPA. ([django-rest-framework.org][8], [Django Project][9], [PyPI][10])
+
+---
+
+## 1) Install
+
+From `frontend/`:
+
+```bash
+npm i zustand framer-motion @mui/material @emotion/react @emotion/styled
+npm i blockly react-blockly
+# (If you use React Router)
+npm i react-router-dom
+```
+
+From `backend/` (optional scores API):
+
+```bash
+pip install djangorestframework django-cors-headers
+```
+
+> If you theme MUI, use the palette/theming APIs. ([MUI][7])
+
+---
+
+## 2) File structure (frontend)
+
+```
+src/
+  features/
+    game/
+      GameLauncher.tsx
+      SubjectSelect.tsx
+      QuestionRound.tsx
+      GuessPanel.tsx
+      AgentPanel.tsx
+      ResultsPanel.tsx
+      scoreboard/
+        ScoreSubmitter.tsx
+        Scoreboard.tsx
+    lab/
+      GradingLab.tsx
+      blocks/
+        aggregation.blocks.ts
+        threshold.blocks.ts
+        registry.ts
+  store/
+    gameStore.ts
+    labStore.ts
+  logic/
+    agent.ts
+    aggregate.ts
+    reasoning.ts
+    stringSimilarity.ts
+  data/
+    questions.ts
+  routes/
+    AppRoutes.tsx
+```
+
+---
+
+## 3) Data model
+
+`src/data/questions.ts`
+
+```ts
+export type SubjectKey = 'maths' | 'english' | 'business';
+
+export interface Example {
+  answer: string;
+  points: number;
+}
+
+export interface QuestionItem {
+  subject: SubjectKey;
+  qid: string;
+  prompt: string;
+  rubric: string;
+  correct_answer: string;
+  max_points: number;
+  corrected_examples: Example[];
+  // a couple of student answers – both “clean” and “messy”
+  samples: { label: string; student_answer: string }[];
+}
+
+export const QUESTIONS: QuestionItem[] = [
+  {
+    subject: 'maths',
+    qid: 'M1.a',
+    prompt: 'Compute 7 × 8.',
+    rubric: 'Correct numeric result with minimal working shown.',
+    correct_answer: '56',
+    max_points: 5,
+    corrected_examples: [
+      { answer: '56', points: 5 },
+      { answer: '56.0', points: 5 },
+      { answer: '55', points: 0 },
+      { answer: 'I think 7*8 = 56', points: 5 },
+      { answer: '7+8=15', points: 0 },
+    ],
+    samples: [
+      { label: 'Clean', student_answer: '56' },
+      { label: 'Off-by-one', student_answer: '55' },
+    ],
+  },
+  {
+    subject: 'english',
+    qid: 'E2.b',
+    prompt: 'State a thesis on theme T and support with two textual references.',
+    rubric: 'Clear thesis + 2 references aligned with theme.',
+    correct_answer:
+      'Thesis clearly states T and references lines X and Y to support.',
+    max_points: 10,
+    corrected_examples: [
+      { answer: 'Thesis on T; cites two scenes.', points: 8 },
+      { answer: 'Thesis but only one example.', points: 6 },
+      { answer: 'Clear thesis; two quotes.', points: 9 },
+      { answer: 'Vague thesis; general talk.', points: 5 },
+      { answer: 'No thesis; off-topic.', points: 2 },
+    ],
+    samples: [
+      { label: 'Solid', student_answer: 'Thesis on T with two quotes.' },
+      { label: 'Weak', student_answer: 'Talks about plot, no thesis.' },
+    ],
+  },
+  {
+    subject: 'business',
+    qid: 'B3.c',
+    prompt: 'Define market segmentation and give one example.',
+    rubric: 'Correct definition + example.',
+    correct_answer:
+      'Dividing a market into groups based on shared characteristics; e.g., age-based segments.',
+    max_points: 6,
+    corrected_examples: [
+      { answer: 'Definition + age example.', points: 6 },
+      { answer: 'Definition only.', points: 4 },
+      { answer: 'Example only.', points: 2 },
+      { answer: 'Off-topic.', points: 0 },
+      { answer: 'Definition + geo example.', points: 6 },
+    ],
+    samples: [
+      { label: 'Decent', student_answer: 'Splitting market by age; teens.' },
+      { label: 'Off-topic', student_answer: 'Marketing is selling.' },
+    ],
+  },
+];
+```
+
+---
+
+## 4) State (Zustand + persist)
+
+`src/store/gameStore.ts`
+
+```ts
+import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import type { SubjectKey, QuestionItem } from '../data/questions';
+
+type Mode = 'idle' | 'playing' | 'finished';
+
+interface RoundResult {
+  qid: string;
+  subject: SubjectKey;
+  guessPoints?: number;
+  agent: {
+    points_A: number; prob_A: number;
+    points_B: number; prob_B: number;
+    points_C: number; prob_C: number;
+    points_final: number; prob_final: number;
+    decision: 'ACCEPT' | 'LHR';
+    reasoning: string;
+  };
+}
+
+interface GameState {
+  mode: Mode;
+  subject?: SubjectKey;
+  current?: QuestionItem;
+  roundResults: RoundResult[];
+  score: number;
+  start: () => void;
+  chooseSubject: (s: SubjectKey) => void;
+  setQuestion: (q: QuestionItem) => void;
+  finishRound: (res: RoundResult) => void;
+  reset: () => void;
+}
+
+export const useGameStore = create<GameState>()(
+  persist(
+    (set) => ({
+      mode: 'idle',
+      roundResults: [],
+      score: 0,
+      start: () => set({ mode: 'playing', roundResults: [], score: 0, subject: undefined, current: undefined }),
+      chooseSubject: (s) => set({ subject: s }),
+      setQuestion: (q) => set({ current: q }),
+      finishRound: (res) =>
+        set((st) => ({
+          roundResults: [...st.roundResults, res],
+          score: st.score + res.agent.points_final,
+        })),
+      reset: () => set({ mode: 'idle', roundResults: [], score: 0, subject: undefined, current: undefined }),
+    }),
+    { name: 'grading-game', storage: createJSONStorage(() => localStorage) }
+  )
+);
+```
+
+> Persisting with Zustand is a one-liner via middleware. ([zustand.docs.pmnd.rs][4])
+
+`src/store/labStore.ts`
+
+```ts
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+
+export type Aggregation = 'mean' | 'median' | 'weighted';
+
+interface LabState {
+  threshold: number; // 0..1
+  aggregation: Aggregation;
+  weights: [number, number, number]; // for A/B/C when 'weighted'
+  setThreshold: (v: number) => void;
+  setAggregation: (a: Aggregation) => void;
+  setWeights: (w: [number, number, number]) => void;
+}
+export const useLabStore = create<LabState>()(
+  persist(
+    (set) => ({
+      threshold: 0.95,
+      aggregation: 'mean',
+      weights: [1, 1, 1],
+      setThreshold: (v) => set({ threshold: Math.max(0, Math.min(1, v)) }),
+      setAggregation: (a) => set({ aggregation: a }),
+      setWeights: (w) => set({ weights: w }),
+    }),
+    { name: 'grading-lab' }
+  )
+);
+```
+
+---
+
+## 5) Agent logic (deterministic, stubbed but explainable)
+
+`src/logic/stringSimilarity.ts` – simple helpers
+
+```ts
+export const tokenize = (s: string) =>
+  s.toLowerCase().replace(/[^a-z0-9 ]/g, '').split(/\s+/).filter(Boolean);
+
+export const jaccard = (a: string, b: string) => {
+  const A = new Set(tokenize(a)); const B = new Set(tokenize(b));
+  const inter = [...A].filter(x => B.has(x)).length;
+  const uni = new Set([...A, ...B]).size;
+  return uni ? inter / uni : 0;
+};
+```
+
+`src/logic/aggregate.ts`
+
+```ts
+import { useLabStore } from '../store/labStore';
+
+export function aggregatePoints(p: [number, number, number], max: number) {
+  const { aggregation, weights } = useLabStore.getState();
+  if (aggregation === 'median') {
+    const s = [...p].sort((a,b)=>a-b); return Math.round(s[1]);
+  }
+  if (aggregation === 'weighted') {
+    const sumW = weights[0]+weights[1]+weights[2] || 1;
+    const val = (p[0]*weights[0] + p[1]*weights[1] + p[2]*weights[2]) / sumW;
+    return Math.round(val);
+  }
+  return Math.round((p[0] + p[1] + p[2]) / 3);
+}
+
+export function aggregateProb(prob: [number, number, number]) {
+  return (prob[0] + prob[1] + prob[2]) / 3;
+}
+```
+
+`src/logic/reasoning.ts`
+
+```ts
+export const lines = (...xs: string[]) => xs.join('\n');
+
+export function reasoningRubric(rubric: string, student: string) {
+  return lines(
+    'Rubric check:',
+    `- Expected: ${rubric}`,
+    `- Student: ${student}`,
+    '- Heuristics: tokens overlap + presence of required cues.',
+  );
+}
+export function reasoningCompareKey(key: string, student: string) {
+  return lines(
+    'Compare to correct answer:',
+    `- Key: ${key}`,
+    `- Student: ${student}`,
+    `- Similarity = Jaccard tokens`,
+  );
+}
+export function reasoningExamples(examples: {answer:string;points:number}[], student: string) {
+  const top = examples.slice(0,3).map(e => `(${e.points}) ${e.answer}`).join(' | ');
+  return lines(
+    'Compare to corrected examples:',
+    `- References: ${top} ...`,
+    `- Strategy: pick closest by similarity, interpolate points.`,
+  );
+}
+```
+
+`src/logic/agent.ts`
+
+```ts
+import type { QuestionItem } from '../data/questions';
+import { jaccard } from './stringSimilarity';
+import { aggregatePoints, aggregateProb } from './aggregate';
+import { useLabStore } from '../store/labStore';
+import { reasoningRubric, reasoningCompareKey, reasoningExamples, lines } from './reasoning';
+
+export function runAgent(q: QuestionItem, student_answer: string) {
+  const max = q.max_points;
+
+  // A) Rubric check: crude cues
+  const rubricScore = (() => {
+    const sim = jaccard(q.rubric, student_answer);
+    const points = Math.round(sim * max);
+    const prob = Math.min(0.9, 0.5 + sim * 0.5);
+    return { points_A: points, prob_A: Number(prob.toFixed(2)) };
+  })();
+
+  // B) Compare to correct answer
+  const keyScore = (() => {
+    const sim = jaccard(q.correct_answer, student_answer);
+    const points = Math.round(sim * max);
+    const prob = Math.min(0.95, 0.6 + sim * 0.4);
+    return { points_B: points, prob_B: Number(prob.toFixed(2)) };
+  })();
+
+  // C) Compare to corrected examples (nearest neighbour by similarity)
+  const exScore = (() => {
+    const sims = q.corrected_examples.map(e => ({ e, s: jaccard(e.answer, student_answer) }));
+    sims.sort((a,b)=>b.s-a.s);
+    const best = sims[0];
+    const points = best ? Math.round(best.e.points) : Math.round(max/2);
+    const prob = Math.min(0.9, 0.5 + (best?.s || 0) * 0.5);
+    return { points_C: points, prob_C: Number(prob.toFixed(2)) };
+  })();
+
+  const points_final = aggregatePoints(
+    [rubricScore.points_A, keyScore.points_B, exScore.points_C], max
+  );
+  const prob_final = aggregateProb(
+    [rubricScore.prob_A,  keyScore.prob_B,  exScore.prob_C]
+  );
+  const threshold = useLabStore.getState().threshold;
+  const decision = prob_final >= threshold ? 'ACCEPT' : 'LHR';
+
+  const reasoning = lines(
+    reasoningRubric(q.rubric, student_answer),
+    reasoningCompareKey(q.correct_answer, student_answer),
+    reasoningExamples(q.corrected_examples, student_answer),
+    '',
+    `Aggregation: ${useLabStore.getState().aggregation}, threshold=${threshold}`,
+    `Decision: ${decision} at prob_final=${prob_final.toFixed(2)}`
+  );
+
+  return {
+    ...rubricScore, ...keyScore, ...exScore,
+    points_final, prob_final: Number(prob_final.toFixed(2)),
+    decision, reasoning
+  };
+}
+```
+
+---
+
+## 6) UI components
+
+**Routing (optional)**
+
+`src/routes/AppRoutes.tsx`
+
+```tsx
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import GameLauncher from '../features/game/GameLauncher';
+import GradingLab from '../features/lab/GradingLab';
+import Scoreboard from '../features/game/scoreboard/Scoreboard';
+
+export default function AppRoutes() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<GameLauncher />} />
+        <Route path="/lab" element={<GradingLab />} />
+        <Route path="/scores" element={<Scoreboard />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+```
+
+> React Router v6 quick start if you don’t already have it. ([reactrouter.com][11])
+
+**Launcher & Subject selection**
+
+`src/features/game/GameLauncher.tsx`
+
+```tsx
+import { Box, Button, Stack, Typography, Paper } from '@mui/material';
+import SubjectSelect from './SubjectSelect';
+import { useGameStore } from '../../store/gameStore';
+import { motion } from 'framer-motion';
+
+export default function GameLauncher() {
+  const { start, mode } = useGameStore();
+  return (
+    <Stack spacing={3}>
+      <Typography variant="h5">Grading Simulator</Typography>
+      {mode === 'idle' && (
+        <Paper variant="outlined" sx={{ p: 2 }}>
+          <Stack spacing={2}>
+            <Typography variant="body1">
+              Press Start → choose a subject → guess the grade or let the agent decide.
+            </Typography>
+            <Button variant="contained" onClick={start} component={motion.button} whileTap={{ scale: 0.98 }}>
+              Start
+            </Button>
+          </Stack>
+        </Paper>
+      )}
+      {mode !== 'idle' && <SubjectSelect />}
+    </Stack>
+  );
+}
+```
+
+`src/features/game/SubjectSelect.tsx`
+
+```tsx
+import { Box, Button, Stack, Typography, Paper } from '@mui/material';
+import { useGameStore } from '../../store/gameStore';
+import { QUESTIONS, type SubjectKey } from '../../data/questions';
+import QuestionRound from './QuestionRound';
+
+export default function SubjectSelect() {
+  const { subject, chooseSubject, setQuestion } = useGameStore();
+  const pick = (s: SubjectKey) => {
+    chooseSubject(s);
+    const options = QUESTIONS.filter(q => q.subject === s);
+    setQuestion(options[Math.floor(Math.random() * options.length)]);
+  };
+
+  if (!subject) {
+    return (
+      <Paper variant="outlined" sx={{ p: 2 }}>
+        <Typography variant="subtitle1" sx={{ mb: 1 }}>Choose a subject</Typography>
+        <Stack direction="row" spacing={1}>
+          <Button variant="outlined" onClick={() => pick('maths')}>Maths</Button>
+          <Button variant="outlined" onClick={() => pick('english')}>English</Button>
+          <Button variant="outlined" onClick={() => pick('business')}>Business</Button>
+        </Stack>
+      </Paper>
+    );
+  }
+  return <QuestionRound />;
+}
+```
+
+**Round view**
+
+`src/features/game/QuestionRound.tsx`
+
+```tsx
+import { Box, Paper, Stack, Typography, Button, Chip } from '@mui/material';
+import { useGameStore } from '../../store/gameStore';
+import GuessPanel from './GuessPanel';
+import AgentPanel from './AgentPanel';
+import ResultsPanel from './ResultsPanel';
+
+export default function QuestionRound() {
+  const { current } = useGameStore();
+  if (!current) return null;
+
+  return (
+    <Stack spacing={2}>
+      <Paper variant="outlined" sx={{ p: 2 }}>
+        <Typography variant="overline">{current.subject.toUpperCase()} • {current.qid}</Typography>
+        <Typography variant="h6" sx={{ mb: 1 }}>{current.prompt}</Typography>
+        <Chip label={`Max points: ${current.max_points}`} size="small" />
+      </Paper>
+
+      <GuessPanel />
+      <AgentPanel />
+      <ResultsPanel />
+    </Stack>
+  );
+}
+```
+
+**Guess vs Agent**
+
+`src/features/game/GuessPanel.tsx`
+
+```tsx
+import { useState } from 'react';
+import { Paper, Stack, Typography, Button, TextField } from '@mui/material';
+import { useGameStore } from '../../store/gameStore';
+
+export default function GuessPanel() {
+  const { current } = useGameStore();
+  const [guess, setGuess] = useState<number | ''>('');
+  if (!current) return null;
+
+  return (
+    <Paper variant="outlined" sx={{ p: 2 }}>
+      <Typography variant="subtitle2">A) Guess the points</Typography>
+      <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
+        <TextField
+          size="small"
+          type="number"
+          inputProps={{ min: 0, max: current.max_points }}
+          value={guess}
+          onChange={(e) => setGuess(e.target.value === '' ? '' : Number(e.target.value))}
+          label={`0..${current.max_points}`}
+        />
+      </Stack>
+    </Paper>
+  );
+}
+```
+
+`src/features/game/AgentPanel.tsx`
+
+```tsx
+import { useState } from 'react';
+import { Paper, Stack, Typography, Button, MenuItem, Select } from '@mui/material';
+import { useGameStore } from '../../store/gameStore';
+
+export default function AgentPanel() {
+  const { current } = useGameStore();
+  const [sampleIdx, setSampleIdx] = useState(0);
+  if (!current) return null;
+
+  return (
+    <Paper variant="outlined" sx={{ p: 2 }}>
+      <Typography variant="subtitle2">B) Let the Agent decide</Typography>
+      <Stack direction="row" spacing={1} sx={{ mt: 1 }} alignItems="center">
+        <Typography variant="body2">Choose student answer:</Typography>
+        <Select size="small" value={sampleIdx} onChange={(e)=>setSampleIdx(Number(e.target.value))}>
+          {current.samples.map((s, i) => <MenuItem key={i} value={i}>{s.label}</MenuItem>)}
+        </Select>
+      </Stack>
+    </Paper>
+  );
+}
+```
+
+**Results + Compare**
+
+`src/features/game/ResultsPanel.tsx`
+
+```tsx
+import { useMemo, useState } from 'react';
+import { Paper, Stack, Typography, Button, Divider, Chip } from '@mui/material';
+import { useGameStore } from '../../store/gameStore';
+import { runAgent } from '../../logic/agent';
+
+export default function ResultsPanel() {
+  const { current, roundResults, finishRound } = useGameStore();
+  const [guessPoints, setGuessPoints] = useState<number | undefined>(undefined);
+  const [agentOutput, setAgentOutput] = useState<any>(null);
+  const [studentText, setStudentText] = useState<string>(
+    current?.samples?.[0]?.student_answer || ''
+  );
+  if (!current) return null;
+
+  const run = () => {
+    const out = runAgent(current, studentText);
+    setAgentOutput(out);
+    finishRound({
+      qid: current.qid,
+      subject: current.subject,
+      guessPoints,
+      agent: out
+    });
+  };
+
+  return (
+    <Paper variant="outlined" sx={{ p: 2 }}>
+      <Stack spacing={1.5}>
+        <Typography variant="subtitle2">Compare results</Typography>
+        <Stack direction="row" spacing={1}>
+          <Chip size="small" label="A) Your guess" />
+          <Button variant="outlined" onClick={() => setGuessPoints(Number(prompt('Your guess?') || '0'))}>
+            Enter guess
+          </Button>
+          <Chip size="small" label={`Guess: ${guessPoints ?? '—'}`} />
+        </Stack>
+
+        <Stack direction="row" spacing={1}>
+          <Chip size="small" label="B) Agent" />
+          <Button variant="contained" onClick={run}>Run agent</Button>
+        </Stack>
+
+        {agentOutput && (
+          <>
+            <Divider />
+            <Typography variant="body2">
+              Subscores A/B/C: {agentOutput.points_A}/{agentOutput.points_B}/{agentOutput.points_C} •
+              probs {agentOutput.prob_A}/{agentOutput.prob_B}/{agentOutput.prob_C}
+            </Typography>
+            <Typography variant="body2">
+              Final: <b>{agentOutput.points_final}</b> pts • prob_final {agentOutput.prob_final} → {agentOutput.decision}
+            </Typography>
+            <pre style={{ whiteSpace: 'pre-wrap' }}>{agentOutput.reasoning}</pre>
+          </>
+        )}
+      </Stack>
+    </Paper>
+  );
+}
+```
+
+---
+
+## 7) Lab mode (Blockly)
+
+`src/features/lab/blocks/aggregation.blocks.ts`
+
+```ts
+import * as Blockly from 'blockly/core';
+import 'blockly/javascript';
+
+export function registerAggregationBlocks() {
+  Blockly.common.defineBlocksWithJsonArray([
+    {
+      "type": "set_aggregation",
+      "message0": "aggregation %1",
+      "args0": [{ "type": "field_dropdown", "name": "AGG", "options": [
+        ["mean","mean"], ["median","median"], ["weighted","weighted"]
+      ]}],
+      "previousStatement": null,
+      "nextStatement": null,
+      "colour": 230
+    },
+    {
+      "type": "set_weights",
+      "message0": "weights A %1 B %2 C %3",
+      "args0": [
+        {"type": "field_number", "name": "WA", "value": 1, "min": 0},
+        {"type": "field_number", "name": "WB", "value": 1, "min": 0},
+        {"type": "field_number", "name": "WC", "value": 1, "min": 0}
+      ],
+      "previousStatement": null,
+      "nextStatement": null,
+      "colour": 65
+    }
+  ]);
+
+  const js = Blockly.JavaScript;
+  js['set_aggregation'] = (block) => `setAggregation('${block.getFieldValue('AGG')}');\n`;
+  js['set_weights'] = (block) => {
+    const wa = block.getFieldValue('WA');
+    const wb = block.getFieldValue('WB');
+    const wc = block.getFieldValue('WC');
+    return `setWeights([${wa},${wb},${wc}]);\n`;
+  };
+}
+```
+
+`src/features/lab/blocks/threshold.blocks.ts`
+
+```ts
+import * as Blockly from 'blockly/core';
+import 'blockly/javascript';
+
+export function registerThresholdBlocks() {
+  Blockly.common.defineBlocksWithJsonArray([
+    {
+      "type": "set_threshold",
+      "message0": "threshold %1",
+      "args0": [{ "type": "field_number", "name": "T", "value": 0.95, "min":0, "max":1, "precision":0.01 }],
+      "previousStatement": null,
+      "nextStatement": null,
+      "colour": 20
+    }
+  ]);
+  Blockly.JavaScript['set_threshold'] = (block) =>
+    `setThreshold(${block.getFieldValue('T')});\n`;
+}
+```
+
+`src/features/lab/blocks/registry.ts`
+
+```ts
+import { registerAggregationBlocks } from './aggregation.blocks';
+import { registerThresholdBlocks } from './threshold.blocks';
+
+export function registerAllBlocks() {
+  registerAggregationBlocks();
+  registerThresholdBlocks();
+}
+```
+
+`src/features/lab/GradingLab.tsx`
+
+```tsx
+import { useEffect, useMemo, useState } from 'react';
+import { Box, Paper, Stack, Typography, Chip } from '@mui/material';
+import { BlocklyWorkspace } from 'react-blockly';
+import * as Blockly from 'blockly/core';
+import 'blockly/blocks';
+import 'blockly/javascript';
+import { registerAllBlocks } from './blocks/registry';
+import { useLabStore } from '../../store/labStore';
+
+registerAllBlocks();
+
+export default function GradingLab() {
+  const { threshold, aggregation, weights, setThreshold, setAggregation, setWeights } = useLabStore();
+  const [code, setCode] = useState('');
+
+  // toolbox config
+  const toolbox = useMemo(() => ({
+    kind: 'categoryToolbox',
+    contents: [
+      { kind: 'category', name: 'Decision', contents: [{ kind: 'block', type: 'set_threshold' }]},
+      { kind: 'category', name: 'Aggregation', contents: [
+        { kind: 'block', type: 'set_aggregation' },
+        { kind: 'block', type: 'set_weights' },
+      ]},
+    ]
+  }), []);
+
+  const onWorkspaceChange = (ws: Blockly.WorkspaceSvg) => {
+    const js = Blockly.JavaScript.workspaceToCode(ws);
+    setCode(js);
+    try {
+      // expose setters in scope
+      const fn = new Function('setThreshold','setAggregation','setWeights', js);
+      fn(setThreshold, setAggregation, setWeights);
+    } catch {}
+  };
+
+  return (
+    <Stack spacing={2}>
+      <Typography variant="h6">Build the Rules (Lab)</Typography>
+      <Paper variant="outlined" sx={{ p: 2, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
+        <Box sx={{ minHeight: 420 }}>
+          <BlocklyWorkspace toolboxConfiguration={toolbox as any} className="blockly-wrapper" onWorkspaceChange={onWorkspaceChange}/>
+        </Box>
+        <Stack spacing={1}>
+          <Typography variant="subtitle2">Live code</Typography>
+          <Paper variant="outlined" sx={{ p: 1.5, whiteSpace: 'pre-wrap', fontFamily: 'monospace', fontSize: 12 }}>
+            {code || '// drag blocks to set threshold/aggregation/weights'}
+          </Paper>
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Chip label={`threshold: ${threshold}`} />
+            <Chip label={`agg: ${aggregation}`} />
+            <Chip label={`weights: [${weights.join(',')}]`} />
+          </Stack>
+        </Stack>
+      </Paper>
+    </Stack>
+  );
+}
+```
+
+> Blockly theming and JSON toolbox are first-class, and generating code on change is the recommended pattern. ([Google for Developers][1], [MUI][12], [reactrouter.com][3])
+
+---
+
+## 8) Animations
+
+Use **Framer Motion** in buttons / card reveals (already shown in `GameLauncher`). For more, see Motion’s React docs. ([motion.dev][13])
+
+---
+
+## 9) MUI theming (optional)
+
+Set primary, success, warning to match our brand. See MUI palette + theming docs. ([MUI][7])
+
+---
+
+## 10) Optional backend (scores)
+
+**When to use backend vs localStorage?**
+
+* Use **localStorage** (Zustand persist) for session & offline play.
+* Add **Django REST** API to **submit high scores** and show a shared scoreboard (anti-cheat later). ([zustand.docs.pmnd.rs][4])
+
+### Django (DRF) minimal setup
+
+`settings.py` (add)
+
+```py
+INSTALLED_APPS += ['rest_framework', 'corsheaders']
+MIDDLEWARE = ['corsheaders.middleware.CorsMiddleware', *MIDDLEWARE]
+CORS_ALLOWED_ORIGINS = ['http://localhost:5173', 'http://localhost:3000']  # adjust
+```
+
+> `django-cors-headers` is the standard approach. ([PyPI][10])
+
+**Model**
+
+```py
+# app/models.py
+from django.db import models
+
+class Score(models.Model):
+    player = models.CharField(max_length=64)
+    score = models.IntegerField()
+    rounds = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-score', 'created_at']
+```
+
+**Serializer & ViewSet**
+
+```py
+# app/serializers.py
+from rest_framework import serializers
+from .models import Score
+
+class ScoreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Score
+        fields = ['id', 'player', 'score', 'rounds', 'created_at']
+
+# app/views.py
+from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from .models import Score
+from .serializers import ScoreSerializer
+
+class ScoreViewSet(viewsets.ModelViewSet):
+    queryset = Score.objects.all()
+    serializer_class = ScoreSerializer
+
+    @action(detail=False, methods=['get'])
+    def top(self, request):
+        n = int(request.query_params.get('limit', 20))
+        qs = Score.objects.all().order_by('-score', 'created_at')[:n]
+        return Response(ScoreSerializer(qs, many=True).data)
+```
+
+**URLs**
+
+```py
+# app/urls.py
+from rest_framework import routers
+from .views import ScoreViewSet
+router = routers.DefaultRouter()
+router.register(r'scores', ScoreViewSet, basename='scores')
+
+urlpatterns = router.urls
+```
+
+> DRF quickstart + routers/viewsets docs for this pattern. ([django-rest-framework.org][8])
+
+**CSRF & CORS**
+
+If you POST from the SPA on the same domain, include the CSRF token header. If different origins, configure **CORS** and still handle **CSRF** as per Django/DRF guidance. ([Django Project][9], [django-rest-framework.org][14])
+
+### Frontend: submit & list scores
+
+`src/features/game/scoreboard/ScoreSubmitter.tsx`
+
+```tsx
+import { useState } from 'react';
+import { Paper, Stack, TextField, Button, Typography } from '@mui/material';
+import { useGameStore } from '../../../store/gameStore';
+
+export default function ScoreSubmitter() {
+  const { score, roundResults } = useGameStore();
+  const [name, setName] = useState('');
+
+  const submit = async () => {
+    await fetch(import.meta.env.VITE_API_URL + '/scores/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' /* + CSRF if same-site */ },
+      body: JSON.stringify({ player: name || 'Player', score, rounds: roundResults.length })
+    });
+    alert('Submitted!');
+  };
+
+  return (
+    <Paper variant="outlined" sx={{ p: 2 }}>
+      <Typography variant="subtitle2">Submit your score</Typography>
+      <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
+        <TextField size="small" label="Name" value={name} onChange={(e)=>setName(e.target.value)} />
+        <Button variant="contained" onClick={submit}>Submit</Button>
+      </Stack>
+    </Paper>
+  );
+}
+```
+
+`src/features/game/scoreboard/Scoreboard.tsx`
+
+```tsx
+import { useEffect, useState } from 'react';
+import { Paper, Table, TableHead, TableRow, TableCell, TableBody, Typography } from '@mui/material';
+
+type Row = { id:number; player:string; score:number; rounds:number; created_at:string };
+
+export default function Scoreboard() {
+  const [rows, setRows] = useState<Row[]>([]);
+  useEffect(() => {
+    fetch(import.meta.env.VITE_API_URL + '/scores/top?limit=20')
+      .then(r=>r.json()).then(setRows).catch(()=>setRows([]));
+  }, []);
+  return (
+    <Paper variant="outlined" sx={{ p:2 }}>
+      <Typography variant="h6" sx={{ mb: 1 }}>Top Scores</Typography>
+      <Table size="small">
+        <TableHead>
+          <TableRow>
+            <TableCell>Player</TableCell><TableCell>Score</TableCell><TableCell>Rounds</TableCell><TableCell>When</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map(r=>(
+            <TableRow key={r.id}>
+              <TableCell>{r.player}</TableCell>
+              <TableCell>{r.score}</TableCell>
+              <TableCell>{r.rounds}</TableCell>
+              <TableCell>{new Date(r.created_at).toLocaleString()}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </Paper>
+  );
+}
+```
+
+> If your SPA and API are on different origins in dev, enable **CORS** with `django-cors-headers`. For session/Cookie auth, follow Django’s CSRF docs (include the token in requests). ([PyPI][10], [Django Project][9], [django-rest-framework.org][14])
+
+---
+
+## 11) Hooking into your current UI
+
+* Add a nav link to **Play** (`/`) and **Lab** (`/lab`).
+* Reuse your existing gradient styles for titles; MUI theme controls palette tokens. ([MUI][7])
+
+---
+
+## 12) Developer notes / suggestions
+
+* **Reasoning transparency:** we already print the “why” (rubric/key/examples). You can show a compact view with a “See details” accordion (ties to your current style).
+* **Scaling questions:** Add more `QuestionItem`s per subject; the stub agent will still work. For maths, add strict numeric checks first, then fall back to similarity.
+* **Later:** replace the stub with actual models/LLM calls; the interface stays the same (`runAgent()` returns subscores + reasoning).
+* **Fairness knobs:** in Lab, add blocks for clamping points to \[0, max], and a block for “require at least X supporting cues”.
+
+---
+
+## 13) Run it
+
+* Frontend:
+
+  ```bash
+  npm run dev
+  ```
+
+  If using React Router, ensure your top-level renders `<AppRoutes />` in `main.tsx`. ([reactrouter.com][15])
+
+* Backend:
+
+  ```bash
+  python manage.py makemigrations && python manage.py migrate
+  python manage.py runserver 8000
+  ```
+
+  Set `VITE_API_URL=http://localhost:8000` in your frontend `.env`.
+
+---
+
+## 14) Accessibility & perf
+
+* Blockly embedded areas can be heavy; mount the workspace only on `/lab`.
+* If placing Blockly in an MUI **Dialog**, disable focus trap (`disableEnforceFocus`) so dropdowns work properly. ([Google for Developers][1])
+
+---
+
+## 15) Security footnotes
+
+* Don’t disable CSRF in production; include tokens per Django docs. If you host API under same site, you can use Cookie + header token flow. For cross-origin dev, allow CORS to your dev host only. ([Django Project][9], [django-rest-framework.org][14], [PyPI][10])
+
+---
+
+### That’s it
+
+This gives you the **bones**: playable round flow + visible agent reasoning + a visual Lab that actually drives the agent’s behavior, with optional score submission. If you want, I can collapse the UI into a single page with stepper controls and drop in your existing typography and gradient headings so it matches the rest of your site 1:1.
+
+[1]: https://developers.google.com/blockly/guides/configure/web/appearance/themes?utm_source=chatgpt.com "Themes | Blockly"
+[2]: https://github.com/nbudin/react-blockly?utm_source=chatgpt.com "nbudin/react-blockly: A React component that embeds ..."
+[3]: https://reactrouter.com/web/guides/quick-start?utm_source=chatgpt.com "Quick Start"
+[4]: https://zustand.docs.pmnd.rs/integrations/persisting-store-data?utm_source=chatgpt.com "Persisting store data - Zustand"
+[5]: https://www.npmjs.com/package/zustand?utm_source=chatgpt.com "zustand"
+[6]: https://motion.dev/docs?utm_source=chatgpt.com "Motion Documentation (prev Framer Motion)"
+[7]: https://mui.com/material-ui/customization/palette/?utm_source=chatgpt.com "Palette - Material UI"
+[8]: https://www.django-rest-framework.org/tutorial/quickstart/?utm_source=chatgpt.com "Quickstart"
+[9]: https://docs.djangoproject.com/en/5.2/howto/csrf/?utm_source=chatgpt.com "How to use Django's CSRF protection"
+[10]: https://pypi.org/project/django-cors-headers/?utm_source=chatgpt.com "django-cors-headers"
+[11]: https://reactrouter.com/tutorials/quickstart?utm_source=chatgpt.com "Quick Start"
+[12]: https://mui.com/material-ui/customization/theming/?utm_source=chatgpt.com "Theming - Material UI"
+[13]: https://motion.dev/docs/react-animation?utm_source=chatgpt.com "React animation — Transforms, keyframes & SVGs | Motion"
+[14]: https://www.django-rest-framework.org/topics/ajax-csrf-cors/?utm_source=chatgpt.com "AJAX, CSRF & CORS"
+[15]: https://reactrouter.com/v6/start/tutorial?utm_source=chatgpt.com "Tutorial v6.30.1"
