@@ -841,28 +841,25 @@ const HomePage = () => {
             textAlign: 'center',
             mb: 6
           }}>
-                          <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 600, mb: 4 }}>
-              Built-In Guardrails
-            </Typography>  
-                        <Box sx={{ display: 'flex', justifyContent: 'center', mb: 4 }}>
-
-              
+            <Box sx={{ display: 'flex', justifyContent: 'center', mb: 4 }}>
               <Box 
                 component="img"
                 src={guardrailsIcon}
                 alt="Guardrails Illustration"
                 sx={{ 
-                  width: 440,
+                  width: 250,
                   height: 'auto',
                   maxWidth: '100%'
                 }}
               />
             </Box>
-            <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 600, mb: 4 }}>
-            (Trust by Design)
-            </Typography>
             
-
+            <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 600, mb: 2, textAlign: 'center' }}>
+              Built-In Guardrails
+            </Typography>  
+            <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 600, mb: 4, textAlign: 'center' }}>
+              (Trust by Design)
+            </Typography>
             
             <Typography color="text.secondary" sx={{ mb: 3 }}>
               Safety isn't a feature—it's the architecture.
@@ -938,6 +935,7 @@ const HomePage = () => {
             </Box>
           </Box>
         </Box>
+
 
         {/* Skeptics' Q&A */}
         <Box sx={{ pt: 4, pb: 8 }}>
