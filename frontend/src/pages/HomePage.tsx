@@ -1,5 +1,5 @@
 // pages/HomePage.tsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Box,
   Container,
@@ -95,8 +95,26 @@ const orbVars = (seed: number): SxProps<Theme> => {
 
 const HomePage = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
+
+  // Preload hero images for better performance
+  useEffect(() => {
+    const preloadImages = [bothImage, studentImage, teacherImage];
+    let loadedCount = 0;
+
+    preloadImages.forEach((src) => {
+      const img = new Image();
+      img.onload = () => {
+        loadedCount++;
+        if (loadedCount === preloadImages.length) {
+          setImagesLoaded(true);
+        }
+      };
+      img.src = src;
+    });
+  }, []);
 
 
   return (
@@ -130,7 +148,7 @@ const HomePage = () => {
           left: 0,
           right: 0,
           bottom: 0,
-          background: {
+          background: imagesLoaded ? {
             xs: `
               linear-gradient(
                 rgba(15, 15, 35, 0.8) 0%,
@@ -150,11 +168,12 @@ const HomePage = () => {
               url(${studentImage}) center/33.33% 100% no-repeat,
               url(${teacherImage}) right/33.33% 100% no-repeat
             `
-          },
-          opacity: 0.3,
-          filter: 'blur(1px) saturate(0.7)',
+          } : 'linear-gradient(135deg, rgba(15, 15, 35, 0.9) 0%, rgba(26, 26, 46, 0.8) 100%)',
+          opacity: imagesLoaded ? 0.3 : 0.8,
+          filter: imagesLoaded ? 'blur(1px) saturate(0.7)' : 'none',
           pointerEvents: 'none',
           zIndex: 0,
+          transition: 'opacity 0.5s ease-in-out, filter 0.5s ease-in-out',
         },
       }}>
         <Container maxWidth="md" sx={{ position: 'relative', zIndex: 2 }}>

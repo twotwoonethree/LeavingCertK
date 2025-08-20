@@ -8,15 +8,11 @@ import HomeIcon from '@mui/icons-material/Home';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import ScienceIcon from '@mui/icons-material/Science';
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
 
   const overflowItems: NavItem[] = [
-    { label: 'Play', to: '/play', icon: PlayArrowIcon },
-    { label: 'Lab', to: '/lab', icon: ScienceIcon },
     { label: 'Grading', to: '/grading', icon: AssessmentIcon },
     { label: 'Future', to: '/future', icon: TrendingUpIcon },
     { label: 'The Challenge', to: '/challenge', icon: ReportProblemIcon },
