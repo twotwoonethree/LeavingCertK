@@ -3,7 +3,7 @@
   base = "frontend"
 
   # Build command: the command to build the production-ready files
-  command = "npm ci && npm run build"
+  command = "npm ci --legacy-peer-deps && npm run build"
 
   # Publish directory: the folder containing the final build artifacts
   publish = "dist"

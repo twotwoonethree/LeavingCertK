@@ -11,8 +11,6 @@ import HomePage from './pages/HomePage';
 import GradingPage from './pages/GradingPage';
 import FuturePage from './pages/FuturePage';
 import ChallengePage from './pages/ChallengePage';
-import GameLauncher from './features/game/GameLauncher';
-import GradingLab from './features/lab/GradingLab';
 
 function App() {
   // useMemo ensures the theme is not recalculated on every render
@@ -28,8 +26,6 @@ function App() {
           <Route path="/grading" element={<GradingPage />} />
           <Route path="/future" element={<FuturePage />} />
           <Route path="/challenge" element={<ChallengePage />} />
-          <Route path="/play" element={<GameLauncher />} />
-          <Route path="/lab" element={<GradingLab />} />
         </Routes>
       </main>
     </ThemeProvider>
