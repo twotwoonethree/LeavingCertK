@@ -121,7 +121,7 @@ const HomePage = () => {
     <>
       <GlobalStyles styles={keyframes} />
       <Box sx={{ 
-        background: 'linear-gradient(135deg, rgba(15, 15, 35, 0.9) 0%, rgba(26, 26, 46, 0.8) 100%)',
+        background: 'linear-gradient(135deg, rgba(42, 44, 54, 0.9) 0%, rgba(61, 63, 77, 0.8) 100%)',
         minHeight: { xs: 'auto', md: '100vh' },
         pt: { xs: 12, md: 0 }, 
         pb: { xs: 8, md: 0 },
@@ -136,7 +136,7 @@ const HomePage = () => {
           left: 0,
           right: 0,
           bottom: 0,
-          background: 'radial-gradient(ellipse at center, rgba(233, 69, 96, 0.1) 0%, transparent 70%)',
+          background: 'radial-gradient(ellipse at center, rgba(38, 198, 218, 0.15) 0%, transparent 70%)',
           pointerEvents: 'none',
           zIndex: 1,
         },
@@ -151,24 +151,24 @@ const HomePage = () => {
           background: imagesLoaded ? {
             xs: `
               linear-gradient(
-                rgba(15, 15, 35, 0.8) 0%,
-                rgba(15, 15, 35, 0.6) 50%,
-                rgba(15, 15, 35, 0.8) 100%
+                rgba(42, 44, 54, 0.8) 0%,
+                rgba(42, 44, 54, 0.6) 50%,
+                rgba(42, 44, 54, 0.8) 100%
               ),
               url(${studentImage}) right center/143% 100% no-repeat
             `,
             md: `
               linear-gradient(to right, 
-                rgba(15, 15, 35, 0.85) 0%,
-                rgba(15, 15, 35, 0.7) 33%,
-                rgba(15, 15, 35, 0.7) 66%,
-                rgba(15, 15, 35, 0.85) 100%
+                rgba(42, 44, 54, 0.85) 0%,
+                rgba(42, 44, 54, 0.7) 33%,
+                rgba(42, 44, 54, 0.7) 66%,
+                rgba(42, 44, 54, 0.85) 100%
               ),
               url(${bothImage}) left/33.33% 100% no-repeat,
               url(${studentImage}) center/33.33% 100% no-repeat,
               url(${teacherImage}) right/33.33% 100% no-repeat
             `
-          } : 'linear-gradient(135deg, rgba(15, 15, 35, 0.9) 0%, rgba(26, 26, 46, 0.8) 100%)',
+          } : 'linear-gradient(135deg, rgba(42, 44, 54, 0.9) 0%, rgba(61, 63, 77, 0.8) 100%)',
           opacity: imagesLoaded ? 0.3 : 0.8,
           filter: imagesLoaded ? 'blur(1px) saturate(0.7)' : 'none',
           pointerEvents: 'none',
@@ -189,7 +189,7 @@ const HomePage = () => {
               zIndex: 3,
               mb: { xs: 12, md: 16 },
               transform: 'translateY(-78px)',
-              background: 'linear-gradient(45deg, #e94560, #f39c12, #ff6b35) !important',
+              background: 'linear-gradient(45deg, #26c6da, #4dd0e1, #00bcd4) !important',
               WebkitBackgroundClip: 'text !important',
               WebkitTextFillColor: 'transparent !important',
               backgroundClip: 'text !important',
@@ -230,13 +230,13 @@ const HomePage = () => {
             <LaunchFilledButton 
               onClick={handleOpen}
               label="Share Your Feedback"
-              gradient={['#e94560', '#f39c12', '#ff6b35']}
+              gradient={['#26c6da', '#4dd0e1', '#00bcd4']}
             />
             <FillWipeButton 
               onClick={handleOpen}
               label="Join Early Pilot Interest"
-              gradient={['#e94560', '#f39c12', '#ff6b35']}
-              outlineColor="#f39c12"
+              gradient={['#26c6da', '#4dd0e1', '#00bcd4']}
+              outlineColor="#26c6da"
             />
           </Box>
         </Container>
@@ -318,14 +318,14 @@ const HomePage = () => {
               <Card className="simple-card" sx={{ 
                 minHeight: '200px',
                 '&:hover': {
-                  border: '1px solid rgba(243, 156, 18, 0.4)',
-                  boxShadow: '0 12px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(243, 156, 18, 0.3)'
+                  border: '1px solid rgba(38, 198, 218, 0.4)',
+                  boxShadow: '0 12px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(38, 198, 218, 0.3)'
                 }
               }}>
                 <CardContent className="simple-content" sx={{ display: 'flex', flexDirection: 'column', height: '100%', p: 3 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
-                    <TrendingUpIcon className="stats-icon" sx={{ fontSize: 32, color: '#e94560', mr: 1 }} />
-                    <Typography variant="h5" sx={{ fontWeight: 700, color: '#e94560' }}>Record Volume</Typography>
+                    <TrendingUpIcon className="stats-icon" sx={{ fontSize: 32, color: '#26c6da', mr: 1 }} />
+                    <Typography variant="h5" sx={{ fontWeight: 700, color: '#26c6da' }}>Record Volume</Typography>
                   </Box>
                   <Box sx={{ textAlign: 'center', mb: 2 }}>
                     <Typography variant="h4" sx={{ fontWeight: 700, mb: 0.5 }} className="stats-number">136,000</Typography>
@@ -333,7 +333,7 @@ const HomePage = () => {
                     <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>~4,000,000</Typography>
                     <Typography variant="body2" color="text.secondary">papers distributed</Typography>
                   </Box>
-                  <Box sx={{ mt: 'auto', p: 2, backgroundColor: 'rgba(233, 69, 96, 0.1)', borderRadius: 1, border: '1px solid rgba(233, 69, 96, 0.2)' }}>
+                  <Box sx={{ mt: 'auto', p: 2, backgroundColor: 'rgba(38, 198, 218, 0.1)', borderRadius: 1, border: '1px solid rgba(38, 198, 218, 0.2)' }}>
                     <Typography variant="body2" sx={{ fontWeight: 500, fontSize: '0.85rem' }}>
                       <strong>Why it matters:</strong> Volume keeps rising; logistics are maxed.
                     </Typography>
@@ -351,8 +351,8 @@ const HomePage = () => {
               }}>
                 <CardContent className="simple-content" sx={{ display: 'flex', flexDirection: 'column', height: '100%', p: 3 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
-                    <TrendingDownIcon className="stats-icon" sx={{ fontSize: 32, color: '#f39c12', mr: 1 }} />
-                    <Typography variant="h5" sx={{ fontWeight: 700, color: '#f39c12' }}>Capacity Gap</Typography>
+                    <TrendingDownIcon className="stats-icon" sx={{ fontSize: 32, color: '#4dd0e1', mr: 1 }} />
+                    <Typography variant="h5" sx={{ fontWeight: 700, color: '#4dd0e1' }}>Capacity Gap</Typography>
                   </Box>
                   <Box sx={{ textAlign: 'center', mb: 2 }}>
                     <Typography variant="h4" sx={{ fontWeight: 700, mb: 0.5 }} className="stats-number">36.7 → 53.5</Typography>
@@ -360,7 +360,7 @@ const HomePage = () => {
                     <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>&lt;3,000 vs ~4,000</Typography>
                     <Typography variant="body2" color="text.secondary">examiners needed vs available</Typography>
                   </Box>
-                  <Box sx={{ mt: 'auto', p: 2, backgroundColor: 'rgba(243, 156, 18, 0.1)', borderRadius: 1, border: '1px solid rgba(243, 156, 18, 0.2)' }}>
+                  <Box sx={{ mt: 'auto', p: 2, backgroundColor: 'rgba(77, 208, 225, 0.1)', borderRadius: 1, border: '1px solid rgba(77, 208, 225, 0.2)' }}>
                     <Typography variant="body2" sx={{ fontWeight: 500, fontSize: '0.85rem' }}>
                       <strong>Why it matters:</strong> Fewer markers, more scripts → AI triages routine answers.
                     </Typography>
@@ -372,14 +372,14 @@ const HomePage = () => {
               <Card className="simple-card" sx={{ 
                 minHeight: '200px',
                 '&:hover': {
-                  border: '1px solid rgba(243, 156, 18, 0.4)',
-                  boxShadow: '0 12px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(243, 156, 18, 0.3)'
+                  border: '1px solid rgba(38, 198, 218, 0.4)',
+                  boxShadow: '0 12px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(38, 198, 218, 0.3)'
                 }
               }}>
                 <CardContent className="simple-content" sx={{ display: 'flex', flexDirection: 'column', height: '100%', p: 3 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
-                    <ScheduleIcon className="stats-icon" sx={{ fontSize: 32, color: '#e94560', mr: 1 }} />
-                    <Typography variant="h5" sx={{ fontWeight: 700, color: '#e94560' }}>Results Drift</Typography>
+                    <ScheduleIcon className="stats-icon" sx={{ fontSize: 32, color: '#00acc1', mr: 1 }} />
+                    <Typography variant="h5" sx={{ fontWeight: 700, color: '#00acc1' }}>Results Drift</Typography>
                   </Box>
                   <Box sx={{ textAlign: 'center', mb: 2 }}>
                     <Typography variant="h4" sx={{ fontWeight: 700, mb: 0.5 }} className="stats-number">3 Years</Typography>
@@ -387,7 +387,7 @@ const HomePage = () => {
                     <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>2024: Aug 23</Typography>
                     <Typography variant="body2" color="text.secondary">vs 2019: Aug 13</Typography>
                   </Box>
-                  <Box sx={{ mt: 'auto', p: 2, backgroundColor: 'rgba(233, 69, 96, 0.1)', borderRadius: 1, border: '1px solid rgba(233, 69, 96, 0.2)' }}>
+                  <Box sx={{ mt: 'auto', p: 2, backgroundColor: 'rgba(38, 198, 218, 0.1)', borderRadius: 1, border: '1px solid rgba(38, 198, 218, 0.2)' }}>
                     <Typography variant="body2" sx={{ fontWeight: 500, fontSize: '0.85rem' }}>
                       <strong>Why it matters:</strong> AI speeds marking so results land reliably in mid-August.
                     </Typography>
@@ -554,9 +554,9 @@ const HomePage = () => {
               <AnimatedArrowButton
                 size={56}
                 direction="left"
-                fill="#4caf50"
-                ringBase="#4caf50"
-                ringAccent="#66bb6a"
+                fill="#4dd0e1"
+                ringBase="#4dd0e1"
+                ringAccent="#26c6da"
                 ariaLabel="Next step"
               />
             </Box>
@@ -638,9 +638,9 @@ const HomePage = () => {
               <AnimatedArrowButton
                 size={56}
                 direction="left"
-                fill="#2196f3"
-                ringBase="#2196f3"
-                ringAccent="#42a5f5"
+                fill="#00acc1"
+                ringBase="#00acc1"
+                ringAccent="#0097a7"
                 ariaLabel="Next step"
               />
             </Box>
@@ -1007,19 +1007,19 @@ const HomePage = () => {
                 title: '"Will AI cost me marks?"',
                 body:
                   'No. The AI never guesses; low-confidence answers auto-escalate to teachers. Consistent rubric checks also reduce missed partial credit.',
-                color: '#ab47bc',
+                color: '#26c6da',
               },
               {
                 title: '"Can AI judge creativity?"',
                 body:
                   'For subjective work, we use rubric + example comparison—and keep humans in charge. Novel answers tend to lower AI confidence and route to a teacher.',
-                color: '#9c27b0',
+                color: '#4dd0e1',
               },
               {
                 title: '"Are teachers being replaced?"',
                 body:
                   'No. Teachers define standards, handle edge cases, and audit outcomes. AI removes drudgery so educators focus on judgement.',
-                color: '#8e24aa',
+                color: '#00acc1',
               },
             ].map((q) => (
               <Grid key={q.title} size={{ xs: 12, md: 4 }}>
@@ -1185,7 +1185,7 @@ const HomePage = () => {
           <LaunchFilledButton 
             onClick={handleOpen}
             label="Share Your Feedback"
-            gradient={['#e94560', '#f39c12', '#ff6b35']}
+            gradient={['#26c6da', '#4dd0e1', '#00bcd4']}
           />
         </Box>
       </Container>
@@ -1202,7 +1202,7 @@ const HomePage = () => {
         <Fade in={modalOpen}>
           <Box sx={{
             ...modalStyle,
-            background: 'linear-gradient(135deg, rgba(15, 15, 35, 0.95), rgba(26, 26, 46, 0.9))',
+            background: 'linear-gradient(135deg, rgba(42, 44, 54, 0.95), rgba(61, 63, 77, 0.9))',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
             border: '1px solid rgba(255, 255, 255, 0.1)',

@@ -5,6 +5,8 @@ import NavOverflowControls, { type NavItem } from './NavOverflowControls';
 
 // Import Icons
 import HomeIcon from '@mui/icons-material/Home';
+// Import logo
+import graidgenieLogo from '../assets/graidgenie_logo_nobg.png';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
@@ -26,7 +28,7 @@ const Navbar: React.FC = () => {
     <AppBar 
       position="static" 
       sx={{ 
-        background: 'linear-gradient(135deg, rgba(15, 15, 35, 0.95) 0%, rgba(26, 26, 46, 0.9) 100%)',
+        background: 'linear-gradient(135deg, rgba(42, 44, 54, 0.95) 0%, rgba(61, 63, 77, 0.9) 100%)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
         borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
@@ -50,7 +52,16 @@ const Navbar: React.FC = () => {
               },
             }}
           >
-            <HomeIcon sx={{ fontSize: 28, color: '#f39c12' }} />
+            <Box
+              component="img"
+              src={graidgenieLogo}
+              alt="GraidGenie Logo"
+              sx={{ 
+                height: 32,
+                width: 'auto',
+                maxWidth: 40
+              }}
+            />
           </Box>
           <Box>
             <Typography 
@@ -59,7 +70,7 @@ const Navbar: React.FC = () => {
               to="/"
               sx={{ 
                 fontWeight: 700,
-                background: 'linear-gradient(45deg, #ffffff, #f39c12)',
+                background: 'linear-gradient(45deg, #ffffff, #26c6da)',
                 backgroundSize: '200% 200%',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
@@ -70,7 +81,7 @@ const Navbar: React.FC = () => {
                 }
               }}
             >
-              AI Leaving Cert
+              Graid Genie
             </Typography>
           </Box>
         </Box>

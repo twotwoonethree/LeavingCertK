@@ -6,20 +6,20 @@ export const getAppTheme = (mode: PaletteMode = 'dark') =>
     palette: {
       mode,
       primary: {
-        main: '#0f0f23',
-        light: '#1a1a2e',
-        dark: '#0a0a1a',
+        main: '#3d3f4d',
+        light: '#525461',
+        dark: '#2a2c36',
         contrastText: '#ffffff',
       },
       secondary: {
-        main: '#f39c12',
-        light: '#f7dc6f',
-        dark: '#e67e22',
-        contrastText: '#0f0f23',
+        main: '#26c6da',
+        light: '#4dd0e1',
+        dark: '#0097a7',
+        contrastText: '#ffffff',
       },
       background: {
-        default: '#0a0a0f',
-        paper: '#0f0f23',
+        default: '#2a2c36',
+        paper: '#3d3f4d',
       },
       text: {
         primary: '#ffffff',
@@ -79,7 +79,7 @@ export const getAppTheme = (mode: PaletteMode = 'dark') =>
           root: ({ ownerState }) => {
             // Simple card styling for cards with the 'simple' class
             if (ownerState?.className?.includes('simple-card')) {
-              const accentColor = '#f39c12';
+              const accentColor = '#26c6da';
               return {
                 backgroundColor: 'rgba(255, 255, 255, 0.03)',
                 backdropFilter: 'blur(20px)',
@@ -110,16 +110,16 @@ export const getAppTheme = (mode: PaletteMode = 'dark') =>
             }
             
             // Complex card styling (default)
-            let accentColor = '#f39c12'; // default
+            let accentColor = '#26c6da'; // default - teal from logo
             
             // Check for border card classes to determine orb colors
             const isRedBorderCard = ownerState?.className?.includes('red-border-card');
             const isGreenBorderCard = ownerState?.className?.includes('green-border-card');
             const isBlueBorderCard = ownerState?.className?.includes('blue-border-card');
             
-            if (isRedBorderCard) accentColor = '#e94560';
-            if (isGreenBorderCard) accentColor = '#4caf50';
-            if (isBlueBorderCard) accentColor = '#2196f3';
+            if (isRedBorderCard) accentColor = '#00acc1'; // darker teal
+            if (isGreenBorderCard) accentColor = '#4dd0e1'; // lighter teal
+            if (isBlueBorderCard) accentColor = '#0097a7'; // deep teal
 
             const circleA = alpha(accentColor, 0.25);
             const circleB = alpha(accentColor, 0.35);
@@ -130,7 +130,7 @@ export const getAppTheme = (mode: PaletteMode = 'dark') =>
             return {
               position: 'relative',
               overflow: 'hidden',
-              backgroundColor: 'rgba(15, 15, 35, 0.95)',
+              backgroundColor: 'rgba(61, 63, 77, 0.95)',
               padding: 0,
               border: `1px solid ${alpha(borderAccentColor, 0.2)}`,
               boxShadow: `0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px ${alpha(borderAccentColor, 0.1)}`,
@@ -206,10 +206,10 @@ export const getAppTheme = (mode: PaletteMode = 'dark') =>
             const isBlueBorder = ownerState?.className?.includes('blue-border-content');
             
             // Complex card content styling (default)
-            let accentColor = '#f39c12'; // default
-            if (isRedBorder) accentColor = '#e94560';
-            if (isGreenBorder) accentColor = '#4caf50';
-            if (isBlueBorder) accentColor = '#2196f3';
+            let accentColor = '#26c6da'; // default - teal from logo
+            if (isRedBorder) accentColor = '#00acc1'; // darker teal
+            if (isGreenBorder) accentColor = '#4dd0e1'; // lighter teal
+            if (isBlueBorder) accentColor = '#0097a7'; // deep teal
             const borderGrad = `linear-gradient(180deg, ${alpha(
               accentColor,
               0
