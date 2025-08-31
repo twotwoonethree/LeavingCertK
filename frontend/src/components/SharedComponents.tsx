@@ -63,7 +63,7 @@ export const Node: React.FC<{
     switch (variant) {
       case 'start':
         return {
-          borderColor: '#e94560',
+          borderColor: '#00acc1',
           background: 'linear-gradient(135deg, rgba(233, 69, 96, 0.1), rgba(243, 156, 18, 0.05))',
           boxShadow: '0 4px 15px rgba(233, 69, 96, 0.2)',
         };
@@ -130,7 +130,7 @@ export const Node: React.FC<{
             width: 28,
             height: 28,
             borderRadius: '50%',
-            background: 'linear-gradient(45deg, #f39c12, #e94560)',
+            background: 'linear-gradient(45deg, #26c6da, #00acc1)',
             color: 'white',
             display: 'flex',
             alignItems: 'center',
@@ -150,10 +150,10 @@ export const Node: React.FC<{
         fontWeight={700}
         sx={{
           background: variant === 'start' 
-            ? 'linear-gradient(45deg, #e94560, #f39c12)'
+            ? 'linear-gradient(45deg, #00acc1, #26c6da)'
             : variant === 'end' 
               ? 'linear-gradient(45deg, #4caf50, #66bb6a)'
-              : 'linear-gradient(45deg, #ffffff, #f39c12)',
+              : 'linear-gradient(45deg, #ffffff, #26c6da)',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
           backgroundClip: 'text',
@@ -191,7 +191,7 @@ export const ArrowDown: React.FC<{ label?: string; variant?: 'default' | 'succes
         sx={{ 
           bgcolor: variant === 'success' ? 'rgba(76, 175, 80, 0.1)' : 'rgba(243, 156, 18, 0.1)', 
           borderColor: variant === 'success' ? 'rgba(76, 175, 80, 0.5)' : 'rgba(243, 156, 18, 0.5)',
-          color: variant === 'success' ? '#4caf50' : '#f39c12',
+          color: variant === 'success' ? '#4caf50' : '#26c6da',
           fontWeight: 600,
           fontSize: '0.75rem',
         }}
@@ -201,8 +201,8 @@ export const ArrowDown: React.FC<{ label?: string; variant?: 'default' | 'succes
     <AnimatedArrowButton
       size={48}
       direction="down"
-      fill={variant === 'success' ? '#4caf50' : '#f39c12'}
-      ringBase={variant === 'success' ? '#4caf50' : '#f39c12'}
+      fill={variant === 'success' ? '#4caf50' : '#26c6da'}
+      ringBase={variant === 'success' ? '#4caf50' : '#26c6da'}
       ringAccent={variant === 'success' ? '#66bb6a' : '#ffb74d'}
       ariaLabel={label || "Next step"}
     />

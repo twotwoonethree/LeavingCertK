@@ -15,18 +15,18 @@ const FuturePage = () => {
           textAlign: 'center',
           mb: 4,
           p: { xs: 2, sm: 4 },
-          background: 'linear-gradient(135deg, rgba(233, 69, 96, 0.05), rgba(243, 156, 18, 0.03))',
-          border: '1px solid rgba(243, 156, 18, 0.2)',
+          background: 'linear-gradient(135deg, rgba(38, 198, 218, 0.05), rgba(77, 208, 225, 0.03))',
+          border: '1px solid rgba(38, 198, 218, 0.2)',
           borderRadius: 3,
           backdropFilter: 'blur(10px)',
-          boxShadow: '0 4px 20px rgba(233, 69, 96, 0.1)',
+          boxShadow: '0 4px 20px rgba(38, 198, 218, 0.1)',
         }}
       >
         <Typography 
           variant="h4"
           component="h1" 
           sx={{
-            background: 'linear-gradient(45deg, #e94560, #f39c12)',
+            background: 'linear-gradient(45deg, #26c6da, #4dd0e1, #00bcd4)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
@@ -38,7 +38,7 @@ const FuturePage = () => {
         >
           Beyond the Challenge: The Future
         </Typography>
-        <Box sx={{ width: 80, height: 4, background: 'linear-gradient(45deg, #e94560, #f39c12)', mx: 'auto', borderRadius: 2, mb: 3 }} />
+        <Box sx={{ width: 80, height: 4, background: 'linear-gradient(45deg, #26c6da, #4dd0e1, #00bcd4)', mx: 'auto', borderRadius: 2, mb: 3 }} />
         <Typography 
           variant="h6" 
           sx={{ 
@@ -70,7 +70,7 @@ const FuturePage = () => {
             content: '""',
             width: 6,
             height: 28,
-            background: 'linear-gradient(45deg, #e94560, #f39c12)',
+            background: 'linear-gradient(45deg, #26c6da, #4dd0e1, #00bcd4)',
             borderRadius: 3,
             mr: 2,
           }
@@ -179,7 +179,7 @@ const FuturePage = () => {
             content: '""',
             width: 6,
             height: 28,
-            background: 'linear-gradient(45deg, #e94560, #f39c12)',
+            background: 'linear-gradient(45deg, #26c6da, #4dd0e1, #00bcd4)',
             borderRadius: 3,
             mr: 2,
           }
@@ -333,7 +333,7 @@ const FuturePage = () => {
             content: '""',
             width: 6,
             height: 28,
-            background: 'linear-gradient(45deg, #e94560, #f39c12)',
+            background: 'linear-gradient(45deg, #26c6da, #4dd0e1, #00bcd4)',
             borderRadius: 3,
             mr: 2,
           }
@@ -345,7 +345,7 @@ const FuturePage = () => {
       <Paper sx={{ 
         p: 3, 
         background: 'linear-gradient(135deg, rgba(15, 15, 35, 0.6), rgba(26, 26, 46, 0.4))', 
-        border: '1px solid rgba(243, 156, 18, 0.2)',
+        border: '1px solid rgba(38, 198, 218, 0.2)',
         borderRadius: 2,
         borderLeft: '4px solid #f39c12',
       }}>

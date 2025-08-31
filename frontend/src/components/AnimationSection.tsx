@@ -53,7 +53,7 @@ const AnimationSection: React.FC = () => {
         <Typography 
           variant="h5" 
           sx={{
-            background: 'linear-gradient(45deg, #e94560, #f39c12)',
+            background: 'linear-gradient(45deg, #00acc1, #26c6da)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
@@ -81,10 +81,10 @@ const AnimationSection: React.FC = () => {
             startIcon={isPlaying ? <PauseCircleOutlineIcon /> : <PlayCircleOutlineIcon />}
             onClick={handlePlayPause}
             sx={{
-              borderColor: '#f39c12',
-              color: '#f39c12',
+              borderColor: '#26c6da',
+              color: '#26c6da',
               '&:hover': {
-                borderColor: '#e94560',
+                borderColor: '#00acc1',
                 backgroundColor: 'rgba(243, 156, 18, 0.1)',
               },
             }}
@@ -189,7 +189,7 @@ const AnimationSection: React.FC = () => {
                     ? 'rgba(76, 175, 80, 0.5)'
                     : 'rgba(255, 255, 255, 0.2)',
                 color: index === currentStep 
-                  ? '#f39c12' 
+                  ? '#26c6da' 
                   : index < currentStep 
                     ? '#4caf50'
                     : 'rgba(255, 255, 255, 0.6)',
@@ -217,7 +217,7 @@ const AnimationSection: React.FC = () => {
         <Typography
           variant="h6"
           sx={{
-            color: '#f39c12',
+            color: '#26c6da',
             fontWeight: 600,
             mb: 2,
             display: 'flex',
@@ -226,7 +226,7 @@ const AnimationSection: React.FC = () => {
               content: '""',
               width: 4,
               height: 20,
-              background: 'linear-gradient(45deg, #e94560, #f39c12)',
+              background: 'linear-gradient(45deg, #00acc1, #26c6da)',
               borderRadius: 2,
               mr: 2,
             }

@@ -262,7 +262,7 @@ const MeetTheMakers: React.FC<MeetTheMakersProps> = ({
                   width: 8,
                   height: 8,
                   borderRadius: '50%',
-                  backgroundColor: i === currentIndex ? '#f39c12' : 'rgba(255, 255, 255, 0.3)',
+                  backgroundColor: i === currentIndex ? '#26c6da' : 'rgba(255, 255, 255, 0.3)',
                   transition: 'background-color 0.3s ease',
                 }}
               />

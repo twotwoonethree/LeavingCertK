@@ -25,8 +25,8 @@ const CodeBlock: React.FC<{ children: React.ReactNode; language?: string }> = ({
     sx={{
       p: { xs: 1.5, sm: 2.5 },
       borderRadius: 2,
-      background: 'linear-gradient(135deg, rgba(15, 15, 35, 0.9), rgba(26, 26, 46, 0.8))',
-      border: '1px solid rgba(243, 156, 18, 0.2)',
+      background: 'linear-gradient(135deg, rgba(42, 44, 54, 0.9), rgba(61, 63, 77, 0.8))',
+      border: '1px solid rgba(38, 198, 218, 0.2)',
       backdropFilter: 'blur(10px)',
       fontFamily:
         'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace',
@@ -45,7 +45,7 @@ const CodeBlock: React.FC<{ children: React.ReactNode; language?: string }> = ({
         top: 8,
         right: 12,
         fontSize: { xs: '0.65rem', sm: '0.7rem' },
-        color: 'rgba(243, 156, 18, 0.7)',
+        color: 'rgba(38, 198, 218, 0.7)',
         textTransform: 'uppercase',
         fontWeight: 600,
         letterSpacing: '1px',
@@ -63,7 +63,7 @@ const SimpleFlowchartSection: React.FC = () => {
       <Typography 
         variant="h5" 
         sx={{
-          background: 'linear-gradient(45deg, #e94560, #f39c12)',
+          background: 'linear-gradient(45deg, #00acc1, #26c6da)',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
           backgroundClip: 'text',
@@ -117,7 +117,7 @@ const SimpleFlowchartSection: React.FC = () => {
             sx={{ 
               mb: 2,
               textAlign: 'center',
-              background: 'linear-gradient(45deg, #e94560, #f39c12)',
+              background: 'linear-gradient(45deg, #00acc1, #26c6da)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
@@ -240,7 +240,7 @@ prob_final   = mean(prob_A, prob_B, prob_C)`}
         defaultExpanded
         sx={{
           background: 'linear-gradient(135deg, rgba(15, 15, 35, 0.6), rgba(26, 26, 46, 0.4))',
-          border: '1px solid rgba(243, 156, 18, 0.2)',
+          border: '1px solid rgba(38, 198, 218, 0.2)',
           borderRadius: 2,
           '&:before': {
             display: 'none',
@@ -248,7 +248,7 @@ prob_final   = mean(prob_A, prob_B, prob_C)`}
         }}
       >
         <AccordionSummary 
-          expandIcon={<ExpandMoreIcon sx={{ color: '#f39c12' }} />}
+          expandIcon={<ExpandMoreIcon sx={{ color: '#26c6da' }} />}
           sx={{
             '& .MuiAccordionSummary-content': {
               margin: '16px 0',
@@ -259,7 +259,7 @@ prob_final   = mean(prob_A, prob_B, prob_C)`}
             variant="subtitle1" 
             fontWeight={700}
             sx={{
-              background: 'linear-gradient(45deg, #e94560, #f39c12)',
+              background: 'linear-gradient(45deg, #00acc1, #26c6da)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
@@ -294,7 +294,7 @@ prob_final   = mean(prob_A, prob_B, prob_C)`}
       <Accordion
         sx={{
           background: 'linear-gradient(135deg, rgba(15, 15, 35, 0.6), rgba(26, 26, 46, 0.4))',
-          border: '1px solid rgba(243, 156, 18, 0.2)',
+          border: '1px solid rgba(38, 198, 218, 0.2)',
           borderRadius: 2,
           '&:before': {
             display: 'none',
@@ -302,7 +302,7 @@ prob_final   = mean(prob_A, prob_B, prob_C)`}
         }}
       >
         <AccordionSummary 
-          expandIcon={<ExpandMoreIcon sx={{ color: '#f39c12' }} />}
+          expandIcon={<ExpandMoreIcon sx={{ color: '#26c6da' }} />}
           sx={{
             '& .MuiAccordionSummary-content': {
               margin: '16px 0',
@@ -313,7 +313,7 @@ prob_final   = mean(prob_A, prob_B, prob_C)`}
             variant="subtitle1" 
             fontWeight={700}
             sx={{
-              background: 'linear-gradient(45deg, #e94560, #f39c12)',
+              background: 'linear-gradient(45deg, #00acc1, #26c6da)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
@@ -361,7 +361,7 @@ JSON only: {"points_C": INT 0..max_points, "prob_C": FLOAT 0..1}.`}</CodeBlock>
       <Accordion
         sx={{
           background: 'linear-gradient(135deg, rgba(15, 15, 35, 0.6), rgba(26, 26, 46, 0.4))',
-          border: '1px solid rgba(243, 156, 18, 0.2)',
+          border: '1px solid rgba(38, 198, 218, 0.2)',
           borderRadius: 2,
           '&:before': {
             display: 'none',
@@ -369,7 +369,7 @@ JSON only: {"points_C": INT 0..max_points, "prob_C": FLOAT 0..1}.`}</CodeBlock>
         }}
       >
         <AccordionSummary 
-          expandIcon={<ExpandMoreIcon sx={{ color: '#f39c12' }} />}
+          expandIcon={<ExpandMoreIcon sx={{ color: '#26c6da' }} />}
           sx={{
             '& .MuiAccordionSummary-content': {
               margin: '16px 0',
@@ -380,7 +380,7 @@ JSON only: {"points_C": INT 0..max_points, "prob_C": FLOAT 0..1}.`}</CodeBlock>
             variant="subtitle1" 
             fontWeight={700}
             sx={{
-              background: 'linear-gradient(45deg, #e94560, #f39c12)',
+              background: 'linear-gradient(45deg, #00acc1, #26c6da)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
@@ -403,7 +403,7 @@ else:
       <Accordion
         sx={{
           background: 'linear-gradient(135deg, rgba(15, 15, 35, 0.6), rgba(26, 26, 46, 0.4))',
-          border: '1px solid rgba(243, 156, 18, 0.2)',
+          border: '1px solid rgba(38, 198, 218, 0.2)',
           borderRadius: 2,
           '&:before': {
             display: 'none',
@@ -411,7 +411,7 @@ else:
         }}
       >
         <AccordionSummary 
-          expandIcon={<ExpandMoreIcon sx={{ color: '#f39c12' }} />}
+          expandIcon={<ExpandMoreIcon sx={{ color: '#26c6da' }} />}
           sx={{
             '& .MuiAccordionSummary-content': {
               margin: '16px 0',
@@ -422,7 +422,7 @@ else:
             variant="subtitle1" 
             fontWeight={700}
             sx={{
-              background: 'linear-gradient(45deg, #e94560, #f39c12)',
+              background: 'linear-gradient(45deg, #00acc1, #26c6da)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',

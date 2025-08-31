@@ -59,7 +59,7 @@ const GradingPage: React.FC = () => {
               sx={{
                 p: 1.5,
                 borderRadius: 2,
-                background: 'linear-gradient(45deg, #e94560, #f39c12)',
+                background: 'linear-gradient(45deg, #26c6da, #4dd0e1, #00bcd4)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -71,7 +71,7 @@ const GradingPage: React.FC = () => {
               variant="h4"
               component="h1"
               sx={{
-                background: 'linear-gradient(45deg, #ffffff, #f39c12)',
+                background: 'linear-gradient(45deg, #ffffff, #26c6da)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
@@ -92,38 +92,38 @@ const GradingPage: React.FC = () => {
                 IconComponent={ArrowDropDownIcon}
                 sx={{
                   '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'rgba(243, 156, 18, 0.3)',
+                    borderColor: 'rgba(38, 198, 218, 0.3)',
                   },
                   '&:hover .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'rgba(243, 156, 18, 0.5)',
+                    borderColor: 'rgba(38, 198, 218, 0.5)',
                   },
                   '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#f39c12',
+                    borderColor: '#26c6da',
                   },
                   '& .MuiSelect-select': {
-                    color: '#f39c12',
+                    color: '#26c6da',
                     fontWeight: 600,
                   },
                   '& .MuiSelect-icon': {
-                    color: '#f39c12',
+                    color: '#26c6da',
                   },
                 }}
                 MenuProps={{
                   PaperProps: {
                     sx: {
-                      background: 'linear-gradient(135deg, rgba(15, 15, 35, 0.95), rgba(26, 26, 46, 0.9))',
+                      background: 'linear-gradient(135deg, rgba(42, 44, 54, 0.95), rgba(61, 63, 77, 0.9))',
                       backdropFilter: 'blur(20px)',
-                      border: '1px solid rgba(243, 156, 18, 0.3)',
+                      border: '1px solid rgba(38, 198, 218, 0.3)',
                       '& .MuiMenuItem-root': {
                         color: 'rgba(255, 255, 255, 0.8)',
                         '&:hover': {
-                          backgroundColor: 'rgba(243, 156, 18, 0.1)',
+                          backgroundColor: 'rgba(38, 198, 218, 0.1)',
                         },
                         '&.Mui-selected': {
-                          backgroundColor: 'rgba(243, 156, 18, 0.2)',
-                          color: '#f39c12',
+                          backgroundColor: 'rgba(38, 198, 218, 0.2)',
+                          color: '#26c6da',
                           '&:hover': {
-                            backgroundColor: 'rgba(243, 156, 18, 0.3)',
+                            backgroundColor: 'rgba(38, 198, 218, 0.3)',
                           },
                         },
                       },
@@ -145,20 +145,20 @@ const GradingPage: React.FC = () => {
             aria-label="grading view selector"
             sx={{
               '& .MuiToggleButton-root': {
-                border: '1px solid rgba(243, 156, 18, 0.3)',
+                border: '1px solid rgba(38, 198, 218, 0.3)',
                 color: 'rgba(255, 255, 255, 0.7)',
                 fontWeight: 600,
                 textTransform: 'none',
                 '&:hover': {
-                  backgroundColor: 'rgba(243, 156, 18, 0.1)',
-                  borderColor: 'rgba(243, 156, 18, 0.5)',
+                  backgroundColor: 'rgba(38, 198, 218, 0.1)',
+                  borderColor: 'rgba(38, 198, 218, 0.5)',
                 },
                 '&.Mui-selected': {
-                  backgroundColor: 'rgba(243, 156, 18, 0.2)',
-                  borderColor: '#f39c12',
-                  color: '#f39c12',
+                  backgroundColor: 'rgba(38, 198, 218, 0.2)',
+                  borderColor: '#26c6da',
+                  color: '#26c6da',
                   '&:hover': {
-                    backgroundColor: 'rgba(243, 156, 18, 0.3)',
+                    backgroundColor: 'rgba(38, 198, 218, 0.3)',
                   },
                 },
               },
@@ -189,7 +189,7 @@ const GradingPage: React.FC = () => {
               <Typography 
                 variant="h5"
                 sx={{
-                  background: 'linear-gradient(45deg, #e94560, #f39c12)',
+                  background: 'linear-gradient(45deg, #26c6da, #4dd0e1, #00bcd4)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
@@ -208,38 +208,38 @@ const GradingPage: React.FC = () => {
                     IconComponent={ArrowDropDownIcon}
                     sx={{
                       '& .MuiOutlinedInput-notchedOutline': {
-                        borderColor: 'rgba(243, 156, 18, 0.3)',
+                        borderColor: 'rgba(38, 198, 218, 0.3)',
                       },
                       '&:hover .MuiOutlinedInput-notchedOutline': {
-                        borderColor: 'rgba(243, 156, 18, 0.5)',
+                        borderColor: 'rgba(38, 198, 218, 0.5)',
                       },
                       '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                        borderColor: '#f39c12',
+                        borderColor: '#26c6da',
                       },
                       '& .MuiSelect-select': {
-                        color: '#f39c12',
+                        color: '#26c6da',
                         fontWeight: 600,
                       },
                       '& .MuiSelect-icon': {
-                        color: '#f39c12',
+                        color: '#26c6da',
                       },
                     }}
                     MenuProps={{
                       PaperProps: {
                         sx: {
-                          background: 'linear-gradient(135deg, rgba(15, 15, 35, 0.95), rgba(26, 26, 46, 0.9))',
+                          background: 'linear-gradient(135deg, rgba(42, 44, 54, 0.95), rgba(61, 63, 77, 0.9))',
                           backdropFilter: 'blur(20px)',
-                          border: '1px solid rgba(243, 156, 18, 0.3)',
+                          border: '1px solid rgba(38, 198, 218, 0.3)',
                           '& .MuiMenuItem-root': {
                             color: 'rgba(255, 255, 255, 0.8)',
                             '&:hover': {
-                              backgroundColor: 'rgba(243, 156, 18, 0.1)',
+                              backgroundColor: 'rgba(38, 198, 218, 0.1)',
                             },
                             '&.Mui-selected': {
-                              backgroundColor: 'rgba(243, 156, 18, 0.2)',
-                              color: '#f39c12',
+                              backgroundColor: 'rgba(38, 198, 218, 0.2)',
+                              color: '#26c6da',
                               '&:hover': {
-                                backgroundColor: 'rgba(243, 156, 18, 0.3)',
+                                backgroundColor: 'rgba(38, 198, 218, 0.3)',
                               },
                             },
                           },
@@ -260,20 +260,20 @@ const GradingPage: React.FC = () => {
                   aria-label="accuracy view selector"
                   sx={{
                     '& .MuiToggleButton-root': {
-                      border: '1px solid rgba(243, 156, 18, 0.3)',
+                      border: '1px solid rgba(38, 198, 218, 0.3)',
                       color: 'rgba(255, 255, 255, 0.7)',
                       fontWeight: 600,
                       textTransform: 'none',
                       '&:hover': {
-                        backgroundColor: 'rgba(243, 156, 18, 0.1)',
-                        borderColor: 'rgba(243, 156, 18, 0.5)',
+                        backgroundColor: 'rgba(38, 198, 218, 0.1)',
+                        borderColor: 'rgba(38, 198, 218, 0.5)',
                       },
                       '&.Mui-selected': {
-                        backgroundColor: 'rgba(243, 156, 18, 0.2)',
-                        borderColor: '#f39c12',
-                        color: '#f39c12',
+                        backgroundColor: 'rgba(38, 198, 218, 0.2)',
+                        borderColor: '#26c6da',
+                        color: '#26c6da',
                         '&:hover': {
-                          backgroundColor: 'rgba(243, 156, 18, 0.3)',
+                          backgroundColor: 'rgba(38, 198, 218, 0.3)',
                         },
                       },
                     },

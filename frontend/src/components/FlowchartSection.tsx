@@ -18,7 +18,7 @@ const FlowchartSection: React.FC = () => {
         align="center" 
         sx={{ 
           mb: 3,
-          background: 'linear-gradient(45deg, #e94560, #f39c12)',
+          background: 'linear-gradient(45deg, #00acc1, #26c6da)',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
           backgroundClip: 'text',
@@ -162,7 +162,7 @@ const FlowchartSection: React.FC = () => {
                   label="Short Answer / Essay Path" 
                   sx={{ 
                     bgcolor: 'rgba(243, 156, 18, 0.2)',
-                    color: '#f39c12',
+                    color: '#26c6da',
                     fontWeight: 600,
                   }} 
                 />

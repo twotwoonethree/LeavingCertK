@@ -51,7 +51,7 @@ export default function NavOverflowControls({
     setDrawerOpen(false);
   };
 
-  const hoverBg = alpha('#f39c12', 0.15);
+  const hoverBg = alpha('#26c6da', 0.15);
 
   const paperBg = 'linear-gradient(135deg, rgba(15, 15, 35, 0.95) 0%, rgba(26, 26, 46, 0.9) 100%)';
 
@@ -78,7 +78,7 @@ export default function NavOverflowControls({
           borderRadius: '12px',
           color: 'text.primary',
           '&:hover': {
-            backgroundColor: alpha('#f39c12', 0.1),
+            backgroundColor: alpha('#26c6da', 0.1),
             border: '1px solid rgba(243, 156, 18, 0.2)',
           }
         }}

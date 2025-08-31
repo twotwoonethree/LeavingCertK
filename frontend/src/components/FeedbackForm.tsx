@@ -166,7 +166,7 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
           component="h1" 
           gutterBottom
           sx={{
-            background: 'linear-gradient(45deg, #e94560, #f39c12)',
+            background: 'linear-gradient(45deg, #00acc1, #26c6da)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
@@ -195,10 +195,10 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
               sx={{ 
                 mb: 2,
                 '& .MuiRating-iconFilled': {
-                  color: '#f39c12',
+                  color: '#26c6da',
                 },
                 '& .MuiRating-iconHover': {
-                  color: '#f39c12',
+                  color: '#26c6da',
                 }
               }}
             />
@@ -216,11 +216,11 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
                   borderColor: 'rgba(243, 156, 18, 0.5)',
                 },
                 '&.Mui-focused fieldset': {
-                  borderColor: '#f39c12',
+                  borderColor: '#26c6da',
                 },
               },
               '& .MuiInputLabel-root.Mui-focused': {
-                color: '#f39c12',
+                color: '#26c6da',
               },
             }}
           />
@@ -239,11 +239,11 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
                   borderColor: 'rgba(243, 156, 18, 0.5)',
                 },
                 '&.Mui-focused fieldset': {
-                  borderColor: '#f39c12',
+                  borderColor: '#26c6da',
                 },
               },
               '& .MuiInputLabel-root.Mui-focused': {
-                color: '#f39c12',
+                color: '#26c6da',
               },
             }}
           />
@@ -257,7 +257,7 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
                 sx={{
                   color: 'rgba(255, 255, 255, 0.7)',
                   '&.Mui-checked': {
-                    color: '#f39c12',
+                    color: '#26c6da',
                   },
                 }}
               />
@@ -274,7 +274,7 @@ const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
               disabled={isSubmitting || !rating}
               size="large"
               sx={{
-                background: 'linear-gradient(45deg, #e94560, #f39c12)',
+                background: 'linear-gradient(45deg, #00acc1, #26c6da)',
                 '&:hover': {
                   background: 'linear-gradient(45deg, #f16a8c, #f7dc6f)',
                 },

@@ -197,14 +197,14 @@ const MakerCard3D: React.FC<MakerCard3DProps> = ({
                 borderRadius: '50%',
                 '@media (hover: hover) and (pointer: fine)': {
                   '&:hover': {
-                    color: '#f39c12',
+                    color: '#26c6da',
                     transform: 'scale(1.1)',
                     backgroundColor: 'rgba(243, 156, 18, 0.2)',
                   },
                 },
                 // Mobile tap feedback
                 '&:active': {
-                  color: '#f39c12',
+                  color: '#26c6da',
                   backgroundColor: 'rgba(243, 156, 18, 0.1)',
                 },
                 transition: 'all 0.2s ease',

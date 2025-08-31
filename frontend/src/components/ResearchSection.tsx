@@ -26,7 +26,7 @@ const ResearchSection: React.FC = () => {
             variant="h4"
             component="h2" 
             sx={{
-              background: 'linear-gradient(45deg, #e94560, #f39c12)',
+              background: 'linear-gradient(45deg, #00acc1, #26c6da)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
@@ -38,7 +38,7 @@ const ResearchSection: React.FC = () => {
           >
             Enhancing AI-Assisted Exam Grading Accuracy
           </Typography>
-          <Box sx={{ width: 80, height: 4, background: 'linear-gradient(45deg, #e94560, #f39c12)', mx: 'auto', borderRadius: 2, mb: 3 }} />
+          <Box sx={{ width: 80, height: 4, background: 'linear-gradient(45deg, #00acc1, #26c6da)', mx: 'auto', borderRadius: 2, mb: 3 }} />
           <Typography 
             variant="h6" 
             sx={{ 
@@ -61,7 +61,7 @@ const ResearchSection: React.FC = () => {
           variant="h5" 
           component="h3" 
           sx={{ 
-            color: '#f39c12',
+            color: '#26c6da',
             fontWeight: 600,
             mb: 3,
             display: 'flex',
@@ -71,7 +71,7 @@ const ResearchSection: React.FC = () => {
               content: '""',
               width: 6,
               height: 28,
-              background: 'linear-gradient(45deg, #e94560, #f39c12)',
+              background: 'linear-gradient(45deg, #00acc1, #26c6da)',
               borderRadius: 3,
               mr: 2,
             }
@@ -85,7 +85,7 @@ const ResearchSection: React.FC = () => {
             background: 'linear-gradient(135deg, rgba(243, 156, 18, 0.1), rgba(243, 156, 18, 0.05))', 
             border: '1px solid rgba(243, 156, 18, 0.3)',
             borderRadius: 2,
-            borderLeft: '4px solid #f39c12',
+            borderLeft: '4px solid #26c6da',
             transition: 'all 0.3s ease',
             '&:hover': {
               borderColor: 'rgba(243, 156, 18, 0.5)',
@@ -93,7 +93,7 @@ const ResearchSection: React.FC = () => {
             }
           }}>
             <Typography variant="body1" sx={{ lineHeight: 1.7, color: 'rgba(255, 255, 255, 0.9)', fontSize: { xs: '0.9rem', sm: '1rem' } }}>
-              <Box component="span" sx={{ fontWeight: 700, color: '#f39c12', fontSize: '1.1em' }}>More Training Data:</Box> Acquire large corpora of past exams and
+              <Box component="span" sx={{ fontWeight: 700, color: '#26c6da', fontSize: '1.1em' }}>More Training Data:</Box> Acquire large corpora of past exams and
               human-graded answers. For example, collect thousands of Leaving Certificate
               responses along with marks. This data lets us fine-tune models or train
               auxiliary components. Prior work shows that injecting domain examples
@@ -108,7 +108,7 @@ const ResearchSection: React.FC = () => {
             background: 'linear-gradient(135deg, rgba(233, 69, 96, 0.1), rgba(233, 69, 96, 0.05))', 
             border: '1px solid rgba(233, 69, 96, 0.3)',
             borderRadius: 2,
-            borderLeft: '4px solid #e94560',
+            borderLeft: '4px solid #00acc1',
             transition: 'all 0.3s ease',
             '&:hover': {
               borderColor: 'rgba(233, 69, 96, 0.5)',
@@ -116,7 +116,7 @@ const ResearchSection: React.FC = () => {
             }
           }}>
             <Typography variant="body1" sx={{ lineHeight: 1.7, color: 'rgba(255, 255, 255, 0.9)', fontSize: { xs: '0.9rem', sm: '1rem' } }}>
-              <Box component="span" sx={{ fontWeight: 700, color: '#e94560', fontSize: '1.1em' }}>Fine-tuning & Custom Models:</Box> While current LLMs can work
+              <Box component="span" sx={{ fontWeight: 700, color: '#00acc1', fontSize: '1.1em' }}>Fine-tuning & Custom Models:</Box> While current LLMs can work
               zero-shot, fine-tuning on relevant content can further boost accuracy. We can
               train a grading-specific model (or LoRA/fine-tune GPT-4/GPT-3 on exam data).
               Research suggests hybrid models that combine LLM embeddings with traditional
@@ -134,7 +134,7 @@ const ResearchSection: React.FC = () => {
           variant="h5" 
           component="h3" 
           sx={{ 
-            color: '#f39c12',
+            color: '#26c6da',
             fontWeight: 600,
             mb: 3,
             display: 'flex',
@@ -144,7 +144,7 @@ const ResearchSection: React.FC = () => {
               content: '""',
               width: 6,
               height: 28,
-              background: 'linear-gradient(45deg, #e94560, #f39c12)',
+              background: 'linear-gradient(45deg, #00acc1, #26c6da)',
               borderRadius: 3,
               mr: 2,
             }
@@ -498,7 +498,7 @@ const ResearchSection: React.FC = () => {
           variant="h5" 
           component="h3" 
           sx={{ 
-            color: '#f39c12',
+            color: '#26c6da',
             fontWeight: 600,
             mb: 3,
             mt: 4,
@@ -509,7 +509,7 @@ const ResearchSection: React.FC = () => {
               content: '""',
               width: 6,
               height: 28,
-              background: 'linear-gradient(45deg, #e94560, #f39c12)',
+              background: 'linear-gradient(45deg, #00acc1, #26c6da)',
               borderRadius: 3,
               mr: 2,
             }
@@ -534,11 +534,11 @@ const ResearchSection: React.FC = () => {
             background: 'linear-gradient(135deg, rgba(15, 15, 35, 0.6), rgba(26, 26, 46, 0.4))', 
             border: '1px solid rgba(243, 156, 18, 0.2)',
             borderRadius: 2,
-            borderLeft: '4px solid #f39c12',
+            borderLeft: '4px solid #26c6da',
           }}>
             <Stack spacing={2}>
               <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
-                <Typography variant="body2" sx={{ color: '#f39c12', fontWeight: 600, minWidth: '60px' }}>
+                <Typography variant="body2" sx={{ color: '#26c6da', fontWeight: 600, minWidth: '60px' }}>
                   1, 10
                 </Typography>
                 <Link
@@ -560,7 +560,7 @@ const ResearchSection: React.FC = () => {
               </Box>
               
               <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
-                <Typography variant="body2" sx={{ color: '#f39c12', fontWeight: 600, minWidth: '60px' }}>
+                <Typography variant="body2" sx={{ color: '#26c6da', fontWeight: 600, minWidth: '60px' }}>
                   2, 3
                 </Typography>
                 <Link
@@ -582,7 +582,7 @@ const ResearchSection: React.FC = () => {
               </Box>
               
               <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
-                <Typography variant="body2" sx={{ color: '#f39c12', fontWeight: 600, minWidth: '60px' }}>
+                <Typography variant="body2" sx={{ color: '#26c6da', fontWeight: 600, minWidth: '60px' }}>
                   4, 5, 6
                 </Typography>
                 <Link
@@ -604,7 +604,7 @@ const ResearchSection: React.FC = () => {
               </Box>
               
               <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
-                <Typography variant="body2" sx={{ color: '#f39c12', fontWeight: 600, minWidth: '60px' }}>
+                <Typography variant="body2" sx={{ color: '#26c6da', fontWeight: 600, minWidth: '60px' }}>
                   7
                 </Typography>
                 <Link
@@ -626,7 +626,7 @@ const ResearchSection: React.FC = () => {
               </Box>
               
               <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
-                <Typography variant="body2" sx={{ color: '#f39c12', fontWeight: 600, minWidth: '60px' }}>
+                <Typography variant="body2" sx={{ color: '#26c6da', fontWeight: 600, minWidth: '60px' }}>
                   8, 9
                 </Typography>
                 <Link
@@ -648,7 +648,7 @@ const ResearchSection: React.FC = () => {
               </Box>
               
               <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
-                <Typography variant="body2" sx={{ color: '#f39c12', fontWeight: 600, minWidth: '60px' }}>
+                <Typography variant="body2" sx={{ color: '#26c6da', fontWeight: 600, minWidth: '60px' }}>
                   11
                 </Typography>
                 <Link
